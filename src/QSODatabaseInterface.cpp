@@ -1,14 +1,16 @@
 #include <QSODatabaseInterface.h>
 
-bool HamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root)
+bool HamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
 {
     QSO_DATABASE* qso_database = new QSO_DATABASE;
     QFile file(name);
 
     bool fileExisted = file.exists();
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QMessageBox::critical(nullptr, "Loading File Error", "Could not load database.xml", QMessageBox::Ok, QMessageBox::NoButton);
+    enum QIODevice::OpenModeFlag flag = create ? QIODevice::ReadWrite : QIODevice::ReadOnly;
+
+    if (!file.open(flag | QIODevice::Text)) {
+        QMessageBox::critical(nullptr, "Loading File Error", "Could not load " + name, QMessageBox::Ok, QMessageBox::NoButton);
         delete qso_database;
         return false;
     }

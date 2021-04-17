@@ -49,3 +49,21 @@ void QSOAddDialog::on_callsignEdit_editingFinished() {
 
 }
 
+
+HamLog::QSO* QSOAddDialog::getQSO() const {
+    HamLog::QSO* qso = new HamLog::QSO;
+    qso->callsign = ui->callsignEdit->text().toStdString();
+    qso->name = ui->nameEdit->text().toStdString();
+    qso->time = ui->dateTimeEdit->time().toString().toStdString();
+    qso->date = ui->dateTimeEdit->date().toString().toStdString();
+    qso->band = ui->bandComboBox->currentText().toStdString();
+    qso->country = ui->countryEdit->text().toStdString();
+    qso->freq = ui->frequencyEdit->text().toStdString();
+    qso->locator = ui->locatorEdit->text().toStdString();
+    qso->opmode = ui->opmodeEdit->text().toStdString();
+    qso->rst = ui->rapportEdit->text().toStdString();
+
+    return qso;
+}
+
+

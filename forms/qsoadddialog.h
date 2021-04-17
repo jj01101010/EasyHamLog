@@ -16,6 +16,8 @@ public:
     explicit QSOAddDialog(MainUIApplication* parent=nullptr);
     ~QSOAddDialog();
 
+    HamLog::QSO* getQSO() const;
+
 private slots:
     void on_fnButton_clicked();
 

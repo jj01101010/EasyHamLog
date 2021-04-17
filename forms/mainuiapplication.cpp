@@ -14,7 +14,7 @@ MainUIApplication::MainUIApplication(QWidget *parent) :
     QSO_DATABASE_ELEMENT root;
     QSO_DATABASE* database = nullptr;
 
-    if (!HamLog::QSODatabaseInterface::readDatabase("database.xml", database, &root)) {
+    if (!HamLog::QSODatabaseInterface::readDatabase("database.xml", database, &root, true)) {
         setupSuccess = false;
         return;
     }
@@ -113,23 +113,14 @@ void MainUIApplication::on_addContactButton_clicked()
     
     if (ret == 1) {
 
-        /*
-        HamLog::QSO* qso = new HamLog::QSO;
-        qso->name = "";
-        qso->callsign = "";
-        qso->country = "";
-        qso->band = "";
-        qso->date = "";
-        qso->freq = "";
-        qso->locator = "";
-        qso->time = "";
+        HamLog::QSO* qso = addDialog.getQSO();
 
         registeredQSOs.push_back(qso);
 
         HamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
 
         insertRowData(ui->tableWidget, ui->tableWidget->rowCount(), qso);
-        ui->tableWidget->sortItems(0, MAIN_SORT_ORDER);*/
+        ui->tableWidget->sortItems(0, MAIN_SORT_ORDER);
     }
 }
 

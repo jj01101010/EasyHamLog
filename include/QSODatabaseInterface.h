@@ -14,7 +14,7 @@ namespace HamLog {
 	class QSODatabaseInterface {
 	public:
 
-		static bool readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root);
+		static bool readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create=false);
 
 		static QSO* nextQSO(QSO_DATABASE_ELEMENT* root);
 
