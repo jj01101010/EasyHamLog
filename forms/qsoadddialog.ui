@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QSOAddDialog</class>
+ <widget class="QDialog" name="QSOAddDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>452</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Add QSO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Callsign</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="callsignEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>45</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="nameEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Band</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="bandComboBox">
+         <property name="placeholderText">
+          <string/>
+         </property>
+         <item>
+          <property name="text">
+           <string>2,2km</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>630m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>160m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>80m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>60m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>40m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>30m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>20m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>17m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>12m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>4m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2m</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>70cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>23cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>13cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>9cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1,2cm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6mm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>4mm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2,5mm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2mm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1,2mm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+++</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Frequency</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="frequencyEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Rapport</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="rapportEdit"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="fnButton">
+         <property name="text">
+          <string>59</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="fnnButton">
+         <property name="text">
+          <string>599</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Operation Mode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="opmodeEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Date/Time (UTC)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateTimeEdit" name="dateTimeEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>Country</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="countryEdit"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>QSOAddDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>QSOAddDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
