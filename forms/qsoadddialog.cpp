@@ -2,32 +2,46 @@
 #include "ui_qsoadddialog.h"
 #include <QMessageBox>
 
-QSOAddDialog::QSOAddDialog(MainUIApplication* parent) :
+HamLog:: QSOAddDialog::QSOAddDialog(HamLog::MainUIApplication* parent, HamLog::QSO* edited) :
     QDialog(parent),
     parent(parent),
     ui(new Ui::QSOAddDialog)
 {
     ui->setupUi(this);
 
-    ui->dateTimeEdit->setDateTime(QDateTime::currentDateTimeUtc());
+    if (edited != nullptr) {
+        ui->callsignEdit->setText(edited->callsign.c_str());
+        ui->nameEdit->setText(edited->name.c_str());
+        ui->frequencyEdit->setText(edited->freq.c_str());
+        ui->rapportEdit->setText(edited->rst.c_str());
+        ui->opmodeEdit->setText(edited->opmode.c_str());
+        ui->bandComboBox->setCurrentIndex(ui->bandComboBox->findText(edited->band.c_str()));
+        ui->dateTimeEdit->setTime(QTime::fromString(edited->time.c_str()));
+        ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str()));
+        ui->locatorEdit->setText(edited->locator.c_str());
+        ui->countryEdit->setText(edited->country.c_str());
+    }
+    else {
+        ui->dateTimeEdit->setDateTime(QDateTime::currentDateTimeUtc());
+    }
 }
 
-QSOAddDialog::~QSOAddDialog()
+HamLog::QSOAddDialog::~QSOAddDialog()
 {
     delete ui;
 }
 
-void QSOAddDialog::on_fnButton_clicked()
+void HamLog::QSOAddDialog::on_fnButton_clicked()
 {
     ui->rapportEdit->setText("59");
 }
 
-void QSOAddDialog::on_fnnButton_clicked()
+void HamLog::QSOAddDialog::on_fnnButton_clicked()
 {
     ui->rapportEdit->setText("599");
 }
 
-void QSOAddDialog::on_callsignEdit_editingFinished() {
+void HamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
     QString callsign = ui->callsignEdit->text();
 
 
@@ -50,7 +64,7 @@ void QSOAddDialog::on_callsignEdit_editingFinished() {
 }
 
 
-HamLog::QSO* QSOAddDialog::getQSO() const {
+HamLog::QSO* HamLog::QSOAddDialog::getQSO() const {
     HamLog::QSO* qso = new HamLog::QSO;
     qso->callsign = ui->callsignEdit->text().toStdString();
     qso->name = ui->nameEdit->text().toStdString();

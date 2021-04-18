@@ -3,12 +3,11 @@
 
 int main(int argc, char** argv) {
 	QApplication qt_app(argc, argv);
-	MainUIApplication* window = new MainUIApplication();
+	HamLog::MainUIApplication* window = new HamLog::MainUIApplication();
 	window->show();
 	if (window->setupSuccess) {
 		return qt_app.exec();
-	}
-	else {
+	} else {
 		return 1;
 	}
 }

@@ -322,6 +322,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="currentSection">
+          <enum>QDateTimeEdit::DaySection</enum>
+         </property>
         </widget>
        </item>
       </layout>

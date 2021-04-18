@@ -6,7 +6,7 @@ elseif(UNIX)
     project(HamLog)
 endif()
 
-set(CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo" CACHE STRING "" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
 
 #======================= INCLUSION OF Qt =======================#
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
