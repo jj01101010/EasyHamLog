@@ -1,4 +1,4 @@
-# HamLog
+# EasyHamLog
 
 ## Installation Linux
 ```sudo apt-get install cmake make build-essential qt5-default```

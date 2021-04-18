@@ -2,7 +2,7 @@
 #include "ui_qsoadddialog.h"
 #include <QMessageBox>
 
-HamLog:: QSOAddDialog::QSOAddDialog(HamLog::MainUIApplication* parent, HamLog::QSO* edited) :
+EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited) :
     QDialog(parent),
     parent(parent),
     ui(new Ui::QSOAddDialog)
@@ -26,22 +26,22 @@ HamLog:: QSOAddDialog::QSOAddDialog(HamLog::MainUIApplication* parent, HamLog::Q
     }
 }
 
-HamLog::QSOAddDialog::~QSOAddDialog()
+EasyHamLog::QSOAddDialog::~QSOAddDialog()
 {
     delete ui;
 }
 
-void HamLog::QSOAddDialog::on_fnButton_clicked()
+void EasyHamLog::QSOAddDialog::on_fnButton_clicked()
 {
     ui->rapportEdit->setText("59");
 }
 
-void HamLog::QSOAddDialog::on_fnnButton_clicked()
+void EasyHamLog::QSOAddDialog::on_fnnButton_clicked()
 {
     ui->rapportEdit->setText("599");
 }
 
-void HamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
+void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
     QString callsign = ui->callsignEdit->text();
 
 
@@ -53,7 +53,7 @@ void HamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
         }
     }
 
-    HamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
+    EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
 
     if (call_prefix == nullptr) {
         return;
@@ -64,8 +64,8 @@ void HamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
 }
 
 
-HamLog::QSO* HamLog::QSOAddDialog::getQSO() const {
-    HamLog::QSO* qso = new HamLog::QSO;
+EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
+    EasyHamLog::QSO* qso = new EasyHamLog::QSO;
     qso->callsign = ui->callsignEdit->text().toStdString();
     qso->name = ui->nameEdit->text().toStdString();
     qso->time = ui->dateTimeEdit->time().toString().toStdString();

@@ -1,6 +1,6 @@
 #include <QSODatabaseInterface.h>
 
-bool HamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
+bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
 {
     QSO_DATABASE* qso_database = new QSO_DATABASE;
     QFile file(name);
@@ -37,13 +37,13 @@ bool HamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABAS
     return true;
 }
 
-HamLog::QSO* HamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT* root)
+EasyHamLog::QSO* EasyHamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT* root)
 {
     QSO_DATABASE_ELEMENT element = nextElement(root);
     if (element.isNull()) {
         return nullptr;
     }
-    auto qso = new HamLog::QSO;
+    auto qso = new EasyHamLog::QSO;
     qso->name = element.attribute("name", "").toStdString();
     qso->callsign = element.attribute("callsign", "").toStdString();
     qso->time = element.attribute("time", "").toStdString();
@@ -58,7 +58,7 @@ HamLog::QSO* HamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT* root)
     return qso;
 }
 
-bool HamLog::QSODatabaseInterface::writeDatabase(const QString& name, std::vector<HamLog::QSO*> qsos) {
+bool EasyHamLog::QSODatabaseInterface::writeDatabase(const QString& name, std::vector<EasyHamLog::QSO*> qsos) {
 
     QFile file(name);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -94,7 +94,7 @@ bool HamLog::QSODatabaseInterface::writeDatabase(const QString& name, std::vecto
     return true;
 }
 
-QSO_DATABASE_ELEMENT HamLog::QSODatabaseInterface::nextElement(QSO_DATABASE_ELEMENT* root) {
+QSO_DATABASE_ELEMENT EasyHamLog::QSODatabaseInterface::nextElement(QSO_DATABASE_ELEMENT* root) {
     if (root->isNull()) {
         return QDomElement();
     }

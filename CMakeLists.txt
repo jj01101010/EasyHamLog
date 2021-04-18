@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.14)
 
+set(PROJ_VERSION 1.0.0)
+
 if (WIN32)
-    project(HamLog LANGUAGES CXX)
+    project(EasyHamLog LANGUAGES CXX VERSION ${PROJ_VERSION})
 elseif(UNIX)
-    project(HamLog)
+    project(EasyHamLog)
 endif()
 
 set(CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
@@ -47,15 +49,15 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${FORMS_DIR})
 
 # Add the executable
 if (WIN32) 
-    add_executable(HamLog WIN32 ${SOURCES})
+    add_executable(EasyHamLog WIN32 ${SOURCES})
 elseif(UNIX)
-    add_executable(HamLog ${SOURCES})
+    add_executable(EasyHamLog ${SOURCES})
 endif()
 
 # Add the target includes for MY_PROJECT 
-target_include_directories(HamLog PRIVATE ${FORMS_DIR})
-target_include_directories(HamLog PRIVATE ${INCLUDE_DIR})
-target_include_directories(HamLog PRIVATE ${SOURCE_DIR})
+target_include_directories(EasyHamLog PRIVATE ${FORMS_DIR})
+target_include_directories(EasyHamLog PRIVATE ${INCLUDE_DIR})
+target_include_directories(EasyHamLog PRIVATE ${SOURCE_DIR})
 
 #===================== LINKING LIBRARIES =======================#
-target_link_libraries(HamLog Qt6::Widgets Qt6::Core Qt6::Xml)
+target_link_libraries(EasyHamLog Qt6::Widgets Qt6::Core Qt6::Xml)

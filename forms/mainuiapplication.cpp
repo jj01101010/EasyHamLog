@@ -5,7 +5,7 @@
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder
 
-HamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
+EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainUIApplication)
 {
@@ -15,13 +15,13 @@ HamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QSO_DATABASE_ELEMENT root;
     QSO_DATABASE* database = nullptr;
 
-    if (!HamLog::QSODatabaseInterface::readDatabase("database.xml", database, &root, true)) {
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase("database.xml", database, &root, true)) {
         setupSuccess = false;
         return;
     }
     
-    HamLog::QSO* current_qso;
-    while ((current_qso = HamLog::QSODatabaseInterface::nextQSO(&root)) != nullptr) {
+    EasyHamLog::QSO* current_qso;
+    while ((current_qso = EasyHamLog::QSODatabaseInterface::nextQSO(&root)) != nullptr) {
         registeredQSOs.insert(registeredQSOs.end(), current_qso);
     }
 
@@ -37,15 +37,15 @@ HamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     database = nullptr;
 
-    if (!HamLog::QSODatabaseInterface::readDatabase("prefix_xml.xml", database, &root)) {
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase("prefix_xml.xml", database, &root)) {
         setupSuccess = false;
         return;
     }
 
     QSO_DATABASE_ELEMENT current_prefix;
 
-    while (!(current_prefix = HamLog::QSODatabaseInterface::nextElement(&root)).isNull()) {
-        HamLog::Callsign_Prefix* prefix = new HamLog::Callsign_Prefix;
+    while (!(current_prefix = EasyHamLog::QSODatabaseInterface::nextElement(&root)).isNull()) {
+        EasyHamLog::Callsign_Prefix* prefix = new EasyHamLog::Callsign_Prefix;
         prefix->country_name = current_prefix.attribute("name", "").toStdString();
         prefix->prefix = current_prefix.attribute("prefix", "").toStdString();
         prefix->cq_region = current_prefix.attribute("cq", "").toInt();
@@ -58,7 +58,7 @@ HamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
 }
 
-HamLog::MainUIApplication::~MainUIApplication()
+EasyHamLog::MainUIApplication::~MainUIApplication()
 {
     for (auto& qso : registeredQSOs) {
         delete qso;
@@ -69,7 +69,7 @@ HamLog::MainUIApplication::~MainUIApplication()
     delete ui;
 }
 
-std::vector<std::string> HamLog::MainUIApplication::splitString(const char seperator, const std::string& s) {
+std::vector<std::string> EasyHamLog::MainUIApplication::splitString(const char seperator, const std::string& s) {
     std::vector<std::string> output;
 
     std::string::size_type prev_pos = 0, pos = 0;
@@ -88,7 +88,7 @@ std::vector<std::string> HamLog::MainUIApplication::splitString(const char seper
     return output;
 }
 
-HamLog::Callsign_Prefix* HamLog::MainUIApplication::getPrefix(const QString& call_prefix) {
+EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QString& call_prefix) {
     for (auto& prefix : callsignPrefixes) {
         std::vector<std::string> splitted = splitString('-', prefix->prefix);
 
@@ -106,20 +106,20 @@ HamLog::Callsign_Prefix* HamLog::MainUIApplication::getPrefix(const QString& cal
     return nullptr;
 }
 
-void HamLog::MainUIApplication::on_addContactButton_clicked()
+void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
 {
 
-    HamLog::QSOAddDialog addDialog(this);
+    EasyHamLog::QSOAddDialog addDialog(this);
     addDialog.setModal(true);
     int ret = addDialog.exec();     // 1 = Ok, 0 = Cancel
     
     if (ret == 1) {
 
-        HamLog::QSO* qso = addDialog.getQSO();
+        EasyHamLog::QSO* qso = addDialog.getQSO();
 
         registeredQSOs.push_back(qso);
 
-        HamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
 
         insertRowData(ui->tableWidget, ui->tableWidget->rowCount(), qso);
 
@@ -129,7 +129,7 @@ void HamLog::MainUIApplication::on_addContactButton_clicked()
     }
 }
 
-void HamLog::MainUIApplication::on_findContactEdit_textEdited(const QString &arg1)
+void EasyHamLog::MainUIApplication::on_findContactEdit_textEdited(const QString &arg1)
 {
     QList<QTableWidgetItem*> tempTable = ui->tableWidget->findItems(arg1, Qt::MatchContains);
     
@@ -138,14 +138,14 @@ void HamLog::MainUIApplication::on_findContactEdit_textEdited(const QString &arg
     }
 }
 
-void HamLog::MainUIApplication::on_actionQuit_triggered()
+void EasyHamLog::MainUIApplication::on_actionQuit_triggered()
 {
     QApplication::quit();
 }
 
-void HamLog::MainUIApplication::setRowData(QTableWidget* table, int row, HamLog::QSO* qso)
+void EasyHamLog::MainUIApplication::setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso)
 {
-    HamLog::QSO _qso = *qso;
+    EasyHamLog::QSO _qso = *qso;
     table->setItem(row, 0, new QTableWidgetItem(_qso.callsign.c_str()));
     table->setItem(row, 1, new QTableWidgetItem(_qso.name.c_str()));
     table->setItem(row, 2, new QTableWidgetItem(_qso.time.c_str()));
@@ -158,7 +158,7 @@ void HamLog::MainUIApplication::setRowData(QTableWidget* table, int row, HamLog:
     table->setItem(row, 9, new QTableWidgetItem(_qso.country.c_str()));
 }
 
-void HamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, HamLog::QSO* qso) {
+void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso) {
     table->insertRow(row);
     
     QString uuid = QUuid::createUuid().toString();
@@ -170,10 +170,10 @@ void HamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, HamL
 }
 
 
-void HamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidgetItem *item)
+void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidgetItem *item)
 {
-    HamLog::QSO* qso = qsoRows[ui->tableWidget->item(item->row(), ui->tableWidget->columnCount() - 1)->text()];
-    HamLog::QSOAddDialog addDialog(this, qso);
+    EasyHamLog::QSO* qso = qsoRows[ui->tableWidget->item(item->row(), ui->tableWidget->columnCount() - 1)->text()];
+    EasyHamLog::QSOAddDialog addDialog(this, qso);
     addDialog.setModal(true);
     int ret = addDialog.exec();
 
@@ -182,7 +182,7 @@ void HamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidgetIte
         
         // Get QSO indices
         QString uuid;
-        for (std::pair<QString, HamLog::QSO*> qsos : qsoRows) {
+        for (std::pair<QString, EasyHamLog::QSO*> qsos : qsoRows) {
             if (qsos.second == qso) {
                 uuid = qsos.first;
                 break;
@@ -207,7 +207,7 @@ void HamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidgetIte
 
         setRowData(ui->tableWidget, rowIndex, qso);
 
-        HamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
 
     }
 }

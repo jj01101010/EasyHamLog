@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace HamLog {
+namespace EasyHamLog {
     struct QSO {
         std::string callsign;
         std::string name;

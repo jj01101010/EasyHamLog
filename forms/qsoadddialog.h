@@ -8,17 +8,17 @@ namespace Ui {
 class QSOAddDialog;
 }
 
-namespace HamLog {
+namespace EasyHamLog {
 
     class QSOAddDialog : public QDialog
     {
         Q_OBJECT
 
     public:
-        explicit QSOAddDialog(HamLog::MainUIApplication* parent = nullptr, HamLog::QSO* edited = nullptr);
+        explicit QSOAddDialog(EasyHamLog::MainUIApplication* parent = nullptr, EasyHamLog::QSO* edited = nullptr);
         ~QSOAddDialog();
 
-        HamLog::QSO* getQSO() const;
+        EasyHamLog::QSO* getQSO() const;
 
     private slots:
         void on_fnButton_clicked();
@@ -28,7 +28,7 @@ namespace HamLog {
         void on_callsignEdit_editingFinished();
 
     private:
-        HamLog::MainUIApplication* parent;
+        EasyHamLog::MainUIApplication* parent;
         Ui::QSOAddDialog* ui;
     };
 

@@ -13,7 +13,7 @@ namespace Ui {
 class MainUIApplication;
 }
 
-namespace HamLog {
+namespace EasyHamLog {
 
     class MainUIApplication : public QMainWindow
     {
@@ -24,7 +24,7 @@ namespace HamLog {
         ~MainUIApplication();
         bool setupSuccess = true;
 
-        HamLog::Callsign_Prefix* getPrefix(const QString& name);    // TODO: Move to different location
+        EasyHamLog::Callsign_Prefix* getPrefix(const QString& name);    // TODO: Move to different location
         
     private slots:
         void on_addContactButton_clicked();
@@ -35,15 +35,15 @@ namespace HamLog {
         void on_tableWidget_itemDoubleClicked(QTableWidgetItem* item);
 
     private:
-        void setRowData(QTableWidget* table, int row, HamLog::QSO* qso);
-        void insertRowData(QTableWidget* table, int row, HamLog::QSO* qso);
+        void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
+        void insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
 
         std::vector<std::string> splitString(const char del, const std::string& s);
 
     private:
-        std::vector<HamLog::QSO*> registeredQSOs;
-        std::vector<HamLog::Callsign_Prefix*> callsignPrefixes;
-        std::unordered_map<QString, HamLog::QSO*> qsoRows;
+        std::vector<EasyHamLog::QSO*> registeredQSOs;
+        std::vector<EasyHamLog::Callsign_Prefix*> callsignPrefixes;
+        std::unordered_map<QString, EasyHamLog::QSO*> qsoRows;
 
         Ui::MainUIApplication* ui;
     };

@@ -6,7 +6,7 @@
 #include <QtXml>
 #include <QMessageBox>
 
-namespace HamLog {
+namespace EasyHamLog {
 	
 	#define QSO_DATABASE_ELEMENT QDomElement
 	#define QSO_DATABASE QDomDocument
