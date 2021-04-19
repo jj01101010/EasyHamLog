@@ -15,9 +15,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_PREFIX_PATH $ENV{QTDIR})
-find_package(Qt6Core REQUIRED)
-find_package(Qt6 COMPONENTS Xml REQUIRED)
-find_package(Qt6Widgets REQUIRED)
+message(STATUS "$ENV{QTDIR}\\lib\\cmake\\Qt5")
+set(Qt5_DIR "$ENV{QTDIR}\\lib\\cmake\\Qt5")
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Xml REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #=================== INCLUSION OF Project Files ====================#
 set(FORMS_DIR "${CMAKE_SOURCE_DIR}/forms")
@@ -60,4 +62,4 @@ target_include_directories(EasyHamLog PRIVATE ${INCLUDE_DIR})
 target_include_directories(EasyHamLog PRIVATE ${SOURCE_DIR})
 
 #===================== LINKING LIBRARIES =======================#
-target_link_libraries(EasyHamLog Qt6::Widgets Qt6::Core Qt6::Xml)
+target_link_libraries(EasyHamLog Qt5::Widgets Qt5::Core Qt5::Xml)

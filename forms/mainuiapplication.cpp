@@ -28,7 +28,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     delete database;
 
     for (auto& qso : registeredQSOs) {
-        insertRowData(ui->tableWidget, ui->tableWidget->rowCount(), qso);
+        insertRowData(ui->tableWidget, 0, qso);
     }
 
     ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
@@ -79,7 +79,7 @@ std::vector<std::string> EasyHamLog::MainUIApplication::splitString(const char s
         std::string substring(s.substr(prev_pos, pos - prev_pos));
 
         output.push_back(substring);
-
+        
         prev_pos = ++pos;
     }
 
@@ -121,7 +121,7 @@ void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
 
         EasyHamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
 
-        insertRowData(ui->tableWidget, ui->tableWidget->rowCount(), qso);
+        insertRowData(ui->tableWidget, 0, qso);
 
         ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
         ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);

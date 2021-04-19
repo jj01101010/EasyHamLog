@@ -17,7 +17,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
         ui->opmodeEdit->setText(edited->opmode.c_str());
         ui->bandComboBox->setCurrentIndex(ui->bandComboBox->findText(edited->band.c_str()));
         ui->dateTimeEdit->setTime(QTime::fromString(edited->time.c_str()));
-        ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str()));
+        ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str(), "dd.MM.yyyy ddd"));
         ui->locatorEdit->setText(edited->locator.c_str());
         ui->countryEdit->setText(edited->country.c_str());
     }
@@ -69,7 +69,7 @@ EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
     qso->callsign = ui->callsignEdit->text().toStdString();
     qso->name = ui->nameEdit->text().toStdString();
     qso->time = ui->dateTimeEdit->time().toString().toStdString();
-    qso->date = ui->dateTimeEdit->date().toString().toStdString();
+    qso->date = ui->dateTimeEdit->date().toString("dd.MM.yyyy ddd").toStdString();
     qso->band = ui->bandComboBox->currentText().toStdString();
     qso->country = ui->countryEdit->text().toStdString();
     qso->freq = ui->frequencyEdit->text().toStdString();
