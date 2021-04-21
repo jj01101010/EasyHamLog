@@ -34,5 +34,5 @@ for prefix in prefixes:
 	child.set('prefix', prefix[1])
 
 
-with open('prefix_xml.xml', "w", encoding="utf-8") as f:
+with open('prefix_lookup.xml', "w", encoding="utf-8") as f:
 	f.write(minidom.parseString(ET.tostring(data)).toprettyxml(indent="    "))

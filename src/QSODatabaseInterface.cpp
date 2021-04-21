@@ -1,4 +1,5 @@
 #include <QSODatabaseInterface.h>
+#include <string>
 
 bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
 {

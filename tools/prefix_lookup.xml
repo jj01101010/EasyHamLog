@@ -15,8 +15,7 @@
     <PREFIX name="Liberia" prefix="A8"/>
     <PREFIX name="Bahrain" prefix="A9"/>
     <PREFIX name="People's Republic of China (PRC)" prefix="B"/>
-    <PREFIX name="Taiwan" prefix="BM-BQ"/>
-    <PREFIX name="Taiwan" prefix="BU-BX"/>
+    <PREFIX name="Taiwan" prefix="B (BM-BQ, BU-BX)"/>
     <PREFIX name="Chile" prefix="CA-CE"/>
     <PREFIX name="Canada" prefix="CF-CK"/>
     <PREFIX name="Cuba" prefix="CL-CM"/>
@@ -64,8 +63,7 @@
     <PREFIX name="United Kingdom" prefix="G"/>
     <PREFIX name="Hungary" prefix="HA"/>
     <PREFIX name="Switzerland" prefix="HB"/>
-    <PREFIX name="Liechtenstein" prefix="HB0"/>
-    <PREFIX name="Liechtenstein" prefix="HBL"/>
+    <PREFIX name="Liechtenstein" prefix="HB (HB0, HB3Y, HBL)"/>
     <PREFIX name="Ecuador" prefix="HC-HD"/>
     <PREFIX name="Switzerland" prefix="HE"/>
     <PREFIX name="Poland" prefix="HF"/>

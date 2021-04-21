@@ -2,8 +2,12 @@
 #include "ui_mainuiapplication.h"
 #include <QSODatabaseInterface.h>
 #include <qsoadddialog.h>
+#include <QDir>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder
+
+#define QSO_DATABASE_DIR "saved/qso_database.xml"
+#define PREFIX_DATABASE_DIR "lookups/prefix_lookup.xml"
 
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
@@ -12,10 +16,25 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     ui->setupUi(this);
     ui->tableWidget->hideColumn(ui->tableWidget->columnCount() - 1);
 
+    QDir temp_dir("saved");
+    if (!temp_dir.exists()) {
+        if (!temp_dir.mkdir("../saved")) {
+            QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
+        }
+    }
+
+    temp_dir.setPath("lookups");
+    if (!temp_dir.exists()) {
+        if (!temp_dir.mkdir("../lookups")) {
+            QMessageBox::warning(this, "Folder Error!", "Could not create folder 'lookups'");
+        }
+    }
+
+
     QSO_DATABASE_ELEMENT root;
     QSO_DATABASE* database = nullptr;
 
-    if (!EasyHamLog::QSODatabaseInterface::readDatabase("database.xml", database, &root, true)) {
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase(QSO_DATABASE_DIR, database, &root, true)) {
         setupSuccess = false;
         return;
     }
@@ -37,7 +56,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     database = nullptr;
 
-    if (!EasyHamLog::QSODatabaseInterface::readDatabase("prefix_xml.xml", database, &root)) {
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase(PREFIX_DATABASE_DIR, database, &root)) {
         setupSuccess = false;
         return;
     }
@@ -119,7 +138,7 @@ void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
 
         registeredQSOs.push_back(qso);
 
-        EasyHamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
 
         insertRowData(ui->tableWidget, 0, qso);
 
@@ -207,7 +226,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
 
         setRowData(ui->tableWidget, rowIndex, qso);
 
-        EasyHamLog::QSODatabaseInterface::writeDatabase("database.xml", registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
 
     }
 }
