@@ -9,6 +9,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
 {
     ui->setupUi(this);
 
+    // If there is a qso as a template set every form
     if (edited != nullptr) {
         ui->callsignEdit->setText(edited->callsign.c_str());
         ui->nameEdit->setText(edited->name.c_str());
@@ -22,6 +23,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
         ui->countryEdit->setText(edited->country.c_str());
     }
     else {
+        // If there is no template set the time and date to the current UTC time
         ui->dateTimeEdit->setDateTime(QDateTime::currentDateTimeUtc());
     }
 }
@@ -33,18 +35,19 @@ EasyHamLog::QSOAddDialog::~QSOAddDialog()
 
 void EasyHamLog::QSOAddDialog::on_fnButton_clicked()
 {
-    ui->rapportEdit->setText("59");
+    ui->rapportEdit->setText("59"); // Set the rapport to 59
 }
 
 void EasyHamLog::QSOAddDialog::on_fnnButton_clicked()
 {
-    ui->rapportEdit->setText("599");
+    ui->rapportEdit->setText("599"); // Set the rapport to 599
 }
 
 void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
+    // If we finished typing the callsign we get the text
     QString callsign = ui->callsignEdit->text();
 
-
+    // get the prefix of the callsign by the last number in the callsign
     QString prefix;
     for (int i = callsign.length() - 1; i >= 0; i--) {
         if (callsign[i].isNumber()) {
@@ -53,18 +56,21 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
         }
     }
 
+    // We get the prefix object
     EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
 
     if (call_prefix == nullptr) {
         return;
     }
 
+    // and set the country name
     ui->countryEdit->setText(call_prefix->country_name.c_str());
 
 }
 
 
 EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
+    // Return information about the qso
     EasyHamLog::QSO* qso = new EasyHamLog::QSO;
     qso->callsign = ui->callsignEdit->text().toStdString();
     qso->name = ui->nameEdit->text().toStdString();

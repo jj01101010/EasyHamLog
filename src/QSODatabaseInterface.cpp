@@ -3,6 +3,7 @@
 
 bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
 {
+    // Open the database and create one if there is currently none
     QSO_DATABASE* qso_database = new QSO_DATABASE;
     QFile file(name);
 
@@ -40,6 +41,7 @@ bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DAT
 
 EasyHamLog::QSO* EasyHamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT* root)
 {
+    // Get the next qso from the xml file if there is one
     QSO_DATABASE_ELEMENT element = nextElement(root);
     if (element.isNull()) {
         return nullptr;
@@ -60,7 +62,7 @@ EasyHamLog::QSO* EasyHamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT*
 }
 
 bool EasyHamLog::QSODatabaseInterface::writeDatabase(const QString& name, std::vector<EasyHamLog::QSO*> qsos) {
-
+    // Write every information about the qso into the database
     QFile file(name);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::critical(nullptr, "Writing File Error", "Could not load database.xml", QMessageBox::Ok, QMessageBox::NoButton);

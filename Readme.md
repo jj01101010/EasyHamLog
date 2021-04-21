@@ -14,6 +14,7 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Add remove feature for QSOs
 - Create buildfiles for Windows and Linux for simpler build steps
 - Create Windows and Mac installer
+- Fix bug in prefix lookups (e.g. HB0 and HB9 are both handled as switzerland, but one is Liechtenstein)
 
 ## Installation
 
