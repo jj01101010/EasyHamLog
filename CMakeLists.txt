@@ -40,6 +40,9 @@ file(GLOB_RECURSE SOURCES
     "${SOURCE_DIR}/*.cpp"
 )
 
+file(GLOB_RECURSE FORMS "${FORMS_DIR}/*.ui" "${FORMS_DIR}/*.qrc")
+source_group("ui" FILES ${FORMS})
+
 #=================== SETUP EXECTUABLE ====================#
 # Enable debug logging on RELWITHDEBINFO configuration
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
