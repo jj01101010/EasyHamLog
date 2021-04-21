@@ -1,5 +1,20 @@
 # EasyHamLog
 
+## Idea
+My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy cross-compilation while still having a lot of nice to have features like Maps, sync with [QRZ.com](https://qrz.com) and lookup tables for different ham-radio related stuff 
+
+## Features
+- Save and Edit QSOs
+- Search for QSOs
+- Automatic lookup for country prefixes
+
+## TODO's
+- Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
+- Sync QSOs with [QRZ.com](https://qrz.com)
+- Add remove feature for QSOs
+- Create buildfiles for Windows and Linux for simpler build steps
+- Create Windows and Mac installer
+
 ## Installation
 
 ### Installation Linux (from source)
@@ -8,7 +23,7 @@
 3. Make a new build folder inside the repository: ```mkdir build```
 4. Configure the project: ```cmake -S. -Bbuild```
 5. Build the project: ```cmake --build build```
-6. Copy "tools/prefix_xml.xml" to your "build" directory
+6. Copy "tools/prefix_lookup.xml" into "build/lookups"
 
 ### TODO: Installation Windows
 
