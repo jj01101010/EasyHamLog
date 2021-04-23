@@ -26,6 +26,8 @@ namespace EasyHamLog {
 
         EasyHamLog::Callsign_Prefix* getPrefix(const QString& name);    // TODO: Move to different location
         
+        EasyHamLog::QSO* findQSOByCallsign(const std::string& callsign) const;
+
     private slots:
         void on_addContactButton_clicked();
         void on_findContactEdit_textEdited(const QString& arg1);

@@ -4,6 +4,10 @@
 #include <QDialog>
 #include <mainuiapplication.h>
 
+#define QSO_ADD_DIALOG_RESULT_CANCEL 0
+#define QSO_ADD_DIALOG_RESULT_SAVE   1
+#define QSO_ADD_DIALOG_RESULT_DELETE 2
+
 namespace Ui {
 class QSOAddDialog;
 }
@@ -15,7 +19,7 @@ namespace EasyHamLog {
         Q_OBJECT
 
     public:
-        explicit QSOAddDialog(EasyHamLog::MainUIApplication* parent = nullptr, EasyHamLog::QSO* edited = nullptr);
+        explicit QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited = nullptr);
         ~QSOAddDialog();
 
         EasyHamLog::QSO* getQSO() const;
@@ -26,6 +30,12 @@ namespace EasyHamLog {
         void on_fnnButton_clicked();
 
         void on_callsignEdit_editingFinished();
+
+        void on_deleteButton_clicked();
+
+        void on_saveButton_clicked();
+
+        void on_cancelButton_clicked();
 
     private:
         EasyHamLog::MainUIApplication* parent;

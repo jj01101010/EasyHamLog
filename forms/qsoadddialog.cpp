@@ -9,8 +9,10 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
 {
     ui->setupUi(this);
 
-    // If there is a qso as a template set every form
     if (edited != nullptr) {
+
+        // If there is a qso as a template set every form
+
         ui->callsignEdit->setText(edited->callsign.c_str());
         ui->nameEdit->setText(edited->name.c_str());
         ui->frequencyEdit->setText(edited->freq.c_str());
@@ -21,9 +23,16 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
         ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str(), "dd.MM.yyyy ddd"));
         ui->locatorEdit->setText(edited->locator.c_str());
         ui->countryEdit->setText(edited->country.c_str());
+        ui->title->setTextFormat(Qt::MarkdownText);
+        
+        ui->title->setText("<html><head/><body><p><span style=\" font - size:12pt; font - weight:600; \">Edit QSO</span></p></body></html>");
+
     }
     else {
         // If there is no template set the time and date to the current UTC time
+        
+        ui->deleteButton->hide();
+
         ui->dateTimeEdit->setDateTime(QDateTime::currentDateTimeUtc());
     }
 }
@@ -47,24 +56,33 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
     // If we finished typing the callsign we get the text
     QString callsign = ui->callsignEdit->text();
 
-    // get the prefix of the callsign by the last number in the callsign
-    QString prefix;
-    for (int i = callsign.length() - 1; i >= 0; i--) {
-        if (callsign[i].isNumber()) {
-            prefix = callsign.left(i);
-            break;
+    EasyHamLog::QSO* qso = parent->findQSOByCallsign(callsign.toStdString());
+
+    if (qso == nullptr) {
+        // get the prefix of the callsign by the last number in the callsign
+        QString prefix;
+        for (int i = callsign.length() - 1; i >= 0; i--) {
+            if (callsign[i].isNumber()) {
+                prefix = callsign.left(i);
+                break;
+            }
         }
+
+        // We get the prefix object
+        EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
+
+        if (call_prefix == nullptr) {
+            return;
+        }
+
+        // and set the country name
+        ui->countryEdit->setText(call_prefix->country_name.c_str());
     }
-
-    // We get the prefix object
-    EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
-
-    if (call_prefix == nullptr) {
-        return;
+    else {
+        ui->nameEdit->setText(qso->name.c_str());
+        ui->locatorEdit->setText(qso->locator.c_str());
+        ui->countryEdit->setText(qso->country.c_str());
     }
-
-    // and set the country name
-    ui->countryEdit->setText(call_prefix->country_name.c_str());
 
 }
 
@@ -86,4 +104,17 @@ EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
     return qso;
 }
 
+void EasyHamLog::QSOAddDialog::on_deleteButton_clicked()
+{
+    this->done(QSO_ADD_DIALOG_RESULT_DELETE);
+}
 
+void EasyHamLog::QSOAddDialog::on_saveButton_clicked()
+{
+    this->done(QSO_ADD_DIALOG_RESULT_SAVE);
+}
+
+void EasyHamLog::QSOAddDialog::on_cancelButton_clicked()
+{
+    this->done(QSO_ADD_DIALOG_RESULT_CANCEL);
+}

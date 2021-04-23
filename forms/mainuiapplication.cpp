@@ -3,6 +3,7 @@
 #include <QSODatabaseInterface.h>
 #include <qsoadddialog.h>
 #include <QDir>
+#include <qsomap.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -134,14 +135,24 @@ EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QStr
     return nullptr;
 }
 
+EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::string& callsign) const
+{
+    for (auto& qso : registeredQSOs) {
+        if (qso->callsign == callsign) {
+            return qso;
+        }
+    }
+    return nullptr;
+}
+
 void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
 {
     // Create a new Dialog
     EasyHamLog::QSOAddDialog addDialog(this);
     addDialog.setModal(true);
     int ret = addDialog.exec();     // 1 = Ok, 0 = Cancel
-    
-    if (ret == 1) { // If the Ok button was clicked
+
+    if (ret == QSO_ADD_DIALOG_RESULT_SAVE) { // If the Save button was clicked
 
         // We get the QSO information
         EasyHamLog::QSO* qso = addDialog.getQSO();
@@ -221,7 +232,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
     int ret = addDialog.exec();
 
 
-    if (ret) {  // If we want to save the qso
+    if (ret == QSO_ADD_DIALOG_RESULT_SAVE) {  // If we want to save the qso
         
         // Get QSO indices
         QString uuid;
@@ -254,5 +265,31 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
         // And save the new database
         EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
 
+    }
+    else if(ret == QSO_ADD_DIALOG_RESULT_DELETE) {
+        // Get QSO indices
+        QString uuid;
+        for (std::pair<QString, EasyHamLog::QSO*> qsos : qsoRows) {
+            if (qsos.second == qso) {
+                uuid = qsos.first;
+                break;
+            }
+        }
+
+        int qso_index = std::distance(registeredQSOs.begin(), std::find(registeredQSOs.begin(), registeredQSOs.end(), qso));
+
+        QList<QTableWidgetItem*> items = ui->tableWidget->findItems(uuid, Qt::MatchExactly);
+
+        // Remove the QSO row
+        ui->tableWidget->removeRow(items[0]->row());
+
+        // Remove qso from registered QSO list
+        delete registeredQSOs[qso_index];
+        registeredQSOs.erase(registeredQSOs.begin() + qso_index);
+
+        qsoRows.erase(uuid);
+
+        // And save the new database
+        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
     }
 }
