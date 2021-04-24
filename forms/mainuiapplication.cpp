@@ -140,6 +140,8 @@ EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QStr
             }
         }
     }
+
+    return nullptr;
 }
 
 EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::string& callsign) const
