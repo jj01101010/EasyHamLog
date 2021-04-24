@@ -17,14 +17,13 @@ namespace EasyHamLog {
         Q_OBJECT
 
     public:
-        explicit PrefixLookupDialog(EasyHamLog::MainUIApplication* parent);
+        explicit PrefixLookupDialog(QWidget* parent=nullptr);
         ~PrefixLookupDialog();
 
     private slots:
         void on_lineEdit_textEdited(const QString& line);
 
     private:
-        EasyHamLog::MainUIApplication* parent;
         Ui::PrefixLookupDialog* ui;
     };
 }

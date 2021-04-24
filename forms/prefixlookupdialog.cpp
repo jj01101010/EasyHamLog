@@ -1,10 +1,10 @@
 #include "prefixlookupdialog.h"
 #include "ui_prefixlookupdialog.h"
 #include <mainuiapplication.h>
+#include <CallsignLookup.h>
 
-EasyHamLog::PrefixLookupDialog::PrefixLookupDialog(EasyHamLog::MainUIApplication *parent) :
+EasyHamLog::PrefixLookupDialog::PrefixLookupDialog(QWidget* parent) :
     QDialog(parent),
-    parent(parent),
     ui(new Ui::PrefixLookupDialog)
 {
     ui->setupUi(this);
@@ -17,12 +17,11 @@ EasyHamLog::PrefixLookupDialog::~PrefixLookupDialog()
 
 void EasyHamLog::PrefixLookupDialog::on_lineEdit_textEdited(const QString &line)
 {
-    EasyHamLog::Callsign_Prefix* prefix = parent->getPrefix(line);
+    EasyHamLog::Callsign_Prefix* prefix = EasyHamLog::CallsignLookup::getPrefix(line);
     if (prefix != nullptr) {
         ui->countryLabel->setText(prefix->country_name.c_str());
     }
     else {
         ui->countryLabel->setText("");
     }
-
 }

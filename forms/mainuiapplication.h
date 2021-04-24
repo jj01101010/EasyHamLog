@@ -24,8 +24,6 @@ namespace EasyHamLog {
         ~MainUIApplication();
         bool setupSuccess = true;
 
-        EasyHamLog::Callsign_Prefix* getPrefix(const QString& name);    // TODO: Move to different location
-        
         EasyHamLog::QSO* findQSOByCallsign(const std::string& callsign) const;
 
     private slots:
@@ -46,7 +44,6 @@ namespace EasyHamLog {
 
     private:
         std::vector<EasyHamLog::QSO*> registeredQSOs;
-        std::vector<EasyHamLog::Callsign_Prefix*> callsignPrefixes;
         std::unordered_map<std::string, EasyHamLog::QSO*> qsoRows;
 
         Ui::MainUIApplication* ui;

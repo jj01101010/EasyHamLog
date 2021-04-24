@@ -1,6 +1,7 @@
 #include "qsoadddialog.h"
 #include "ui_qsoadddialog.h"
 #include <QMessageBox>
+#include <CallsignLookup.h>
 
 EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited) :
     QDialog(parent),
@@ -71,11 +72,11 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
         }
 
         // We get the prefix object
-        EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
+        EasyHamLog::Callsign_Prefix* call_prefix = EasyHamLog::CallsignLookup::getPrefix(prefix);
 
         if (call_prefix == nullptr) {
             if (prefix.size() > 1) {
-                call_prefix = parent->getPrefix(prefix.left(prefix.size() - 1));
+                call_prefix = EasyHamLog::CallsignLookup::getPrefix(prefix.left(prefix.size() - 1));
             }   
         }
 

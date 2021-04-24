@@ -5,12 +5,12 @@
 #include <QDir>
 #include <qsomap.h>
 #include <prefixlookupdialog.h>
+#include <CallsignLookup.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
 // Constants for the databases and prefix lists
 #define QSO_DATABASE_DIR "saved/qso_database.xml"
-#define PREFIX_DATABASE_DIR "lookups/prefix_lookup.xml"
 
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
@@ -54,32 +54,11 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     delete database;
 
-    database = nullptr;
-
-    // Read the Prefix list and store it in the unsorted_list
-    if (!EasyHamLog::QSODatabaseInterface::readDatabase(PREFIX_DATABASE_DIR, database, &root)) {
-        setupSuccess = false;
-        return;
-    }
-
-    QSO_DATABASE_ELEMENT current_prefix;
-
-    while (!(current_prefix = EasyHamLog::QSODatabaseInterface::nextElement(&root)).isNull()) {
-        EasyHamLog::Callsign_Prefix* prefix = new EasyHamLog::Callsign_Prefix;
-        prefix->country_name = current_prefix.attribute("name", "").toStdString();
-        prefix->prefix = current_prefix.attribute("prefix", "").toStdString();
-        prefix->cq_region = current_prefix.attribute("cq", "").toInt();
-        prefix->itu_region = current_prefix.attribute("itu", "").toInt();
-
-        callsignPrefixes.push_back(prefix);
-    }
-
     // Sort the table after Date and Time
     ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
     ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);
 
-    delete database;
-
+    EasyHamLog::CallsignLookup::Initialize();
 }
 
 EasyHamLog::MainUIApplication::~MainUIApplication()
@@ -88,60 +67,12 @@ EasyHamLog::MainUIApplication::~MainUIApplication()
     for (auto& qso : registeredQSOs) {
         delete qso;
     }
-    for (auto& prefix : callsignPrefixes) {
-        delete prefix;
-    }
     delete ui;
+
+    EasyHamLog::CallsignLookup::Destroy();
 }
 
-// Helper function to split a string by one seperator
-std::vector<std::string> EasyHamLog::MainUIApplication::splitString(const char seperator, const std::string& s) {
-    std::vector<std::string> output;
 
-    std::string::size_type prev_pos = 0, pos = 0;
-
-    while ((pos = s.find(seperator, pos)) != std::string::npos)
-    {
-        std::string substring(s.substr(prev_pos, pos - prev_pos));
-
-        output.push_back(substring);
-        
-        prev_pos = ++pos;
-    }
-
-    output.push_back(s.substr(prev_pos, pos - prev_pos)); // Last word
-
-    return output;
-}
-
-// Get a prefix object with the country name by looking up the callsign prefix in the lookup table
-EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QString& call_prefix) {
-    QString c_prefix = call_prefix.toUpper();
-
-    for (auto& prefix : callsignPrefixes) {
-        std::vector<std::string> splitted = splitString('-', prefix->prefix);   // Split the current callsign prefix by - (from xa to xz is xa-xz)
-
-        // If there is only splitted object it means there is only one prefix for a country (e.g. 4X for israel)
-        if (splitted.size() == 1) {
-            if (splitted[0] == c_prefix.toStdString()) {
-                return prefix;
-            }
-        }
-        // If there is a range of callsign prefixes we want to see if the first letter matches in both the callsign prefix and also the current prefix
-        // Also we need to check if the second letter of the callsign prefix is in the range of the current prefix
-        else {
-            if (call_prefix.size() < 2) {
-                continue;
-            }
-
-            if (splitted[0][1] <= c_prefix[1] && splitted[1][1] >= c_prefix[1] && splitted[0][0] == c_prefix[0]) {
-                return prefix;
-            }
-        }
-    }
-
-    return nullptr;
-}
 
 EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::string& callsign) const
 {
