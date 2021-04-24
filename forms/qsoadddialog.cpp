@@ -62,6 +62,9 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
         QString prefix;
         for (int i = callsign.length() - 1; i >= 0; i--) {
             if (callsign[i].isNumber()) {
+                if (i < callsign.length() - 1) {
+                    i++;    // Add the number itself
+                }
                 prefix = callsign.left(i);
                 break;
             }
@@ -69,6 +72,12 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
 
         // We get the prefix object
         EasyHamLog::Callsign_Prefix* call_prefix = parent->getPrefix(prefix);
+
+        if (call_prefix == nullptr) {
+            if (prefix.size() > 1) {
+                call_prefix = parent->getPrefix(prefix.left(prefix.size() - 1));
+            }   
+        }
 
         if (call_prefix == nullptr) {
             return;

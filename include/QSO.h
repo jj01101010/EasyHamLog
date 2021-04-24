@@ -19,7 +19,7 @@ namespace EasyHamLog {
     struct Callsign_Prefix {
         std::string prefix;
         std::string country_name;
-        int cq_region;
-        int itu_region;
+        int cq_region = 0;
+        int itu_region = 0;
     };
 }

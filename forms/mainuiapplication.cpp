@@ -116,11 +116,6 @@ std::vector<std::string> EasyHamLog::MainUIApplication::splitString(const char s
 
 // Get a prefix object with the country name by looking up the callsign prefix in the lookup table
 EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QString& call_prefix) {
-    
-    if (call_prefix.size() < 2) {
-        return nullptr;
-    }
-
     QString c_prefix = call_prefix.toUpper();
 
     for (auto& prefix : callsignPrefixes) {
@@ -128,13 +123,17 @@ EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QStr
 
         // If there is only splitted object it means there is only one prefix for a country (e.g. 4X for israel)
         if (splitted.size() == 1) {
-            if (splitted[0] == std::string(c_prefix.toStdString())) {
+            if (splitted[0] == c_prefix.toStdString()) {
                 return prefix;
             }
         }
         // If there is a range of callsign prefixes we want to see if the first letter matches in both the callsign prefix and also the current prefix
         // Also we need to check if the second letter of the callsign prefix is in the range of the current prefix
         else {
+            if (call_prefix.size() < 2) {
+                continue;
+            }
+
             if (splitted[0][1] <= c_prefix[1] && splitted[1][1] >= c_prefix[1] && splitted[0][0] == c_prefix[0]) {
                 return prefix;
             }
