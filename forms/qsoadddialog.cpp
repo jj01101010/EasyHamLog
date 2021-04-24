@@ -23,9 +23,8 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
         ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str(), "dd.MM.yyyy ddd"));
         ui->locatorEdit->setText(edited->locator.c_str());
         ui->countryEdit->setText(edited->country.c_str());
-        ui->title->setTextFormat(Qt::MarkdownText);
         
-        ui->title->setText("<html><head/><body><p><span style=\" font - size:12pt; font - weight:600; \">Edit QSO</span></p></body></html>");
+        ui->title->setText("<p><span style=\" font-size:12pt; font-weight:600; \">Edit QSO</span></p>");
 
     }
     else {
