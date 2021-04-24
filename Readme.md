@@ -4,7 +4,7 @@
 My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy cross-compilation while still having a lot of nice to have features like Maps, sync with [QRZ.com](https://qrz.com) and lookup tables for different ham-radio related stuff 
 
 ## Features
-- Save and Edit QSOs
+- Manage QSOs
 - Search for QSOs
 - Automatic lookup for country prefixes
 

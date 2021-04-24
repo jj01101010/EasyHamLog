@@ -4,6 +4,7 @@
 #include <qsoadddialog.h>
 #include <QDir>
 #include <qsomap.h>
+#include <prefixlookupdialog.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -115,24 +116,30 @@ std::vector<std::string> EasyHamLog::MainUIApplication::splitString(const char s
 
 // Get a prefix object with the country name by looking up the callsign prefix in the lookup table
 EasyHamLog::Callsign_Prefix* EasyHamLog::MainUIApplication::getPrefix(const QString& call_prefix) {
+    
+    if (call_prefix.size() < 2) {
+        return nullptr;
+    }
+
+    QString c_prefix = call_prefix.toUpper();
+
     for (auto& prefix : callsignPrefixes) {
         std::vector<std::string> splitted = splitString('-', prefix->prefix);   // Split the current callsign prefix by - (from xa to xz is xa-xz)
 
         // If there is only splitted object it means there is only one prefix for a country (e.g. 4X for israel)
         if (splitted.size() == 1) {
-            if (splitted[0] == std::string(call_prefix.toStdString())) {
+            if (splitted[0] == std::string(c_prefix.toStdString())) {
                 return prefix;
             }
         }
         // If there is a range of callsign prefixes we want to see if the first letter matches in both the callsign prefix and also the current prefix
         // Also we need to check if the second letter of the callsign prefix is in the range of the current prefix
         else {
-            if (splitted[0][1] <= call_prefix[1] && splitted[1][1] >= call_prefix[1] && splitted[0][0] == call_prefix[0]) {
+            if (splitted[0][1] <= c_prefix[1] && splitted[1][1] >= c_prefix[1] && splitted[0][0] == c_prefix[0]) {
                 return prefix;
             }
         }
     }
-    return nullptr;
 }
 
 EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::string& callsign) const
@@ -212,7 +219,7 @@ void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, 
     
     // Create a new uuid and correspond the uuid with the current qso
     QString uuid = QUuid::createUuid().toString();
-    qsoRows[uuid] = qso;
+    qsoRows[uuid.toStdString()] = qso;
 
     // Set the row data
     setRowData(table, row, qso);
@@ -225,7 +232,7 @@ void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, 
 void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidgetItem *item)
 {
     // Find double clicked qso by getting the uuid of the row
-    EasyHamLog::QSO* qso = qsoRows[ui->tableWidget->item(item->row(), ui->tableWidget->columnCount() - 1)->text()];
+    EasyHamLog::QSO* qso = qsoRows[ui->tableWidget->item(item->row(), ui->tableWidget->columnCount() - 1)->text().toStdString()];
     // Make a new dialog with the qso as a template
     EasyHamLog::QSOAddDialog addDialog(this, qso);
     addDialog.setModal(true);
@@ -236,9 +243,9 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
         
         // Get QSO indices
         QString uuid;
-        for (std::pair<QString, EasyHamLog::QSO*> qsos : qsoRows) {
+        for (std::pair<std::string, EasyHamLog::QSO*> qsos : qsoRows) {
             if (qsos.second == qso) {
-                uuid = qsos.first;
+                uuid = qsos.first.c_str();
                 break;
             }
         }
@@ -253,7 +260,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
 
         // Re-add the qso
         registeredQSOs.push_back(qso);
-        qsoRows[uuid] = qso;
+        qsoRows[uuid.toStdString()] = qso;
 
         QList<QTableWidgetItem*> items = ui->tableWidget->findItems(uuid, Qt::MatchExactly);
 
@@ -269,9 +276,9 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
     else if(ret == QSO_ADD_DIALOG_RESULT_DELETE) {
         // Get QSO indices
         QString uuid;
-        for (std::pair<QString, EasyHamLog::QSO*> qsos : qsoRows) {
+        for (std::pair<std::string, EasyHamLog::QSO*> qsos : qsoRows) {
             if (qsos.second == qso) {
-                uuid = qsos.first;
+                uuid = QString(qsos.first.c_str());
                 break;
             }
         }
@@ -287,9 +294,15 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
         delete registeredQSOs[qso_index];
         registeredQSOs.erase(registeredQSOs.begin() + qso_index);
 
-        qsoRows.erase(uuid);
+        qsoRows.erase(uuid.toStdString());
 
         // And save the new database
         EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
     }
+}
+
+void EasyHamLog::MainUIApplication::on_actionPrefix_Lookup_triggered()
+{
+    EasyHamLog::PrefixLookupDialog dialog(this);
+    dialog.exec();
 }

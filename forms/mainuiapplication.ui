@@ -188,8 +188,9 @@
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>Tools</string>
     </property>
+    <addaction name="actionPrefix_Lookup"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -201,6 +202,11 @@
    </property>
    <property name="shortcut">
     <string>Q</string>
+   </property>
+  </action>
+  <action name="actionPrefix_Lookup">
+   <property name="text">
+    <string>Prefix Lookup</string>
    </property>
   </action>
  </widget>

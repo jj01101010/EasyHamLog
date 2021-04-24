@@ -36,6 +36,8 @@ namespace EasyHamLog {
 
         void on_tableWidget_itemDoubleClicked(QTableWidgetItem* item);
 
+        void on_actionPrefix_Lookup_triggered();
+
     private:
         void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
         void insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
@@ -45,7 +47,7 @@ namespace EasyHamLog {
     private:
         std::vector<EasyHamLog::QSO*> registeredQSOs;
         std::vector<EasyHamLog::Callsign_Prefix*> callsignPrefixes;
-        std::unordered_map<QString, EasyHamLog::QSO*> qsoRows;
+        std::unordered_map<std::string, EasyHamLog::QSO*> qsoRows;
 
         Ui::MainUIApplication* ui;
     };
