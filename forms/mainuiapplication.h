@@ -36,6 +36,8 @@ namespace EasyHamLog {
 
         void on_actionPrefix_Lookup_triggered();
 
+        void on_actionExport_Database_triggered();
+
     private:
         void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
         void insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);

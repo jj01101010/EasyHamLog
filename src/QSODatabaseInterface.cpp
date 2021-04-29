@@ -4,7 +4,6 @@
 bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DATABASE* database, QSO_DATABASE_ELEMENT* root, bool create)
 {
     // Open the database and create one if there is currently none
-    QSO_DATABASE* qso_database = new QSO_DATABASE;
     QFile file(name);
 
     bool fileExisted = file.exists();
@@ -13,9 +12,10 @@ bool EasyHamLog::QSODatabaseInterface::readDatabase(const QString& name, QSO_DAT
 
     if (!file.open(flag | QIODevice::Text)) {
         QMessageBox::critical(nullptr, "Loading File Error", "Could not load " + name, QMessageBox::Ok, QMessageBox::NoButton);
-        delete qso_database;
         return false;
     }
+
+    QSO_DATABASE* qso_database = new QSO_DATABASE;
 
     database = qso_database;
 

@@ -191,6 +191,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionPrefix_Lookup"/>
+    <addaction name="actionExport_Database"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -207,6 +208,11 @@
   <action name="actionPrefix_Lookup">
    <property name="text">
     <string>Prefix Lookup</string>
+   </property>
+  </action>
+  <action name="actionExport_Database">
+   <property name="text">
+    <string>Export Database</string>
    </property>
   </action>
  </widget>

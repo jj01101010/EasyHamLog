@@ -2,6 +2,7 @@
 #include <mainuiapplication.h>
 
 int main(int argc, char** argv) {
+
 	// Instantiate main QApplication
 	QApplication qt_app(argc, argv);
 

@@ -6,6 +6,7 @@
 #include <qsomap.h>
 #include <prefixlookupdialog.h>
 #include <CallsignLookup.h>
+#include <ADIInterface.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -22,18 +23,20 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     // Create the "saved" and "lookups" folder
     // If they don't already exist
-    QDir temp_dir("saved");
-    if (!temp_dir.exists()) {
-        if (!temp_dir.mkdir("../saved")) {
-            QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
-        }
+
+    QDir root_dir;
+    qInfo(root_dir.absolutePath().toStdString().c_str());
+
+    if (!root_dir.mkpath("./saved")) {
+        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
+        setupSuccess = false;
+        return;
     }
 
-    temp_dir.setPath("lookups");
-    if (!temp_dir.exists()) {
-        if (!temp_dir.mkdir("../lookups")) {
-            QMessageBox::warning(this, "Folder Error!", "Could not create folder 'lookups'");
-        }
+    if (!root_dir.mkpath("./lookups")) {
+        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'lookups'");
+        setupSuccess = false;
+        return;
     }
 
     // Read the local QSO database
@@ -71,8 +74,6 @@ EasyHamLog::MainUIApplication::~MainUIApplication()
 
     EasyHamLog::CallsignLookup::Destroy();
 }
-
-
 
 EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::string& callsign) const
 {
@@ -237,4 +238,14 @@ void EasyHamLog::MainUIApplication::on_actionPrefix_Lookup_triggered()
 {
     EasyHamLog::PrefixLookupDialog dialog(this);
     dialog.exec();
+}
+
+void EasyHamLog::MainUIApplication::on_actionExport_Database_triggered()
+{
+    QDir root_dir;
+
+    if (!root_dir.mkpath("exports")) {
+        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
+    }
+    EasyHamLog::ADIInterface::writeADIFile("exports/export.adi", registeredQSOs);
 }
