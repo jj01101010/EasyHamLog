@@ -9,6 +9,9 @@
 #include <ADIInterface.h>
 #include <QCheckBox>
 #include <QFileDialog>
+#include <QLabel>
+#include <QBoxLayout>
+#include <AboutMe/AboutMeDialog.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -316,4 +319,11 @@ void EasyHamLog::MainUIApplication::on_actionOpen_Session_triggered()
     // Sort the table after Date and Time
     ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
     ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);
+}
+
+void EasyHamLog::MainUIApplication::on_actionAbout_me_triggered()
+{
+    AboutMeDialog dialog(this);
+    dialog.setModal(true);
+    dialog.exec();
 }

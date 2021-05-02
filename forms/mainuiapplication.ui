@@ -201,8 +201,15 @@
     <addaction name="actionPrefix_Lookup"/>
     <addaction name="actionExport_Database"/>
    </widget>
+   <widget class="QMenu" name="menuInformation">
+    <property name="title">
+     <string>Information</string>
+    </property>
+    <addaction name="actionAbout_me"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuInformation"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
@@ -231,6 +238,11 @@
   <action name="actionOpen_Session">
    <property name="text">
     <string>Open Session</string>
+   </property>
+  </action>
+  <action name="actionAbout_me">
+   <property name="text">
+    <string>About me</string>
    </property>
   </action>
  </widget>

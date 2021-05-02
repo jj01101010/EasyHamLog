@@ -42,6 +42,8 @@ namespace EasyHamLog {
 
         void on_actionOpen_Session_triggered();
 
+        void on_actionAbout_me_triggered();
+
     private:
         void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
         void insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
