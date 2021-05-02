@@ -38,13 +38,18 @@ namespace EasyHamLog {
 
         void on_actionExport_Database_triggered();
 
+        void on_actionNew_Session_triggered();
+
+        void on_actionOpen_Session_triggered();
+
     private:
         void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
         void insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
 
-        std::vector<std::string> splitString(const char del, const std::string& s);
+        void newSession();
 
     private:
+        QString databasePath;
         std::vector<EasyHamLog::QSO*> registeredQSOs;
         std::unordered_map<std::string, EasyHamLog::QSO*> qsoRows;
 

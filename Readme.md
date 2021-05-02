@@ -7,10 +7,13 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Manage QSOs
 - Search for QSOs
 - Automatic lookup for country prefixes
+- Export QSO session to ADI file format (used by e.g. [QRZ.com](https://qrz.com))
+- Create and open different sessions
 
 ## TODO's
+- Make prettier select button
 - Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
-- Sync QSOs with [QRZ.com](https://qrz.com)
+- (Sync QSOs with [QRZ.com](https://qrz.com))
 - Create buildfiles for Windows and Linux for simpler build steps
 - Create Windows and Mac installer
 

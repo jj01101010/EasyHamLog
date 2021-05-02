@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1026</width>
-    <height>574</height>
+    <width>1245</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,7 @@
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
       <property name="columnCount">
-       <number>11</number>
+       <number>12</number>
       </property>
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>true</bool>
@@ -148,6 +148,11 @@
       </column>
       <column>
        <property name="text">
+        <string>Select</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>UUID</string>
        </property>
        <property name="background">
@@ -176,7 +181,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1026</width>
+     <width>1245</width>
      <height>21</height>
     </rect>
    </property>
@@ -184,6 +189,9 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_Session"/>
+    <addaction name="actionOpen_Session"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -213,6 +221,16 @@
   <action name="actionExport_Database">
    <property name="text">
     <string>Export Database</string>
+   </property>
+  </action>
+  <action name="actionNew_Session">
+   <property name="text">
+    <string>New Session</string>
+   </property>
+  </action>
+  <action name="actionOpen_Session">
+   <property name="text">
+    <string>Open Session</string>
    </property>
   </action>
  </widget>

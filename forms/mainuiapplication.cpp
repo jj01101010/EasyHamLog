@@ -7,11 +7,10 @@
 #include <prefixlookupdialog.h>
 #include <CallsignLookup.h>
 #include <ADIInterface.h>
+#include <QCheckBox>
+#include <QFileDialog>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
-
-// Constants for the databases and prefix lists
-#define QSO_DATABASE_DIR "saved/qso_database.xml"
 
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
@@ -39,27 +38,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
         return;
     }
 
-    // Read the local QSO database
-    QSO_DATABASE_ELEMENT root;
-    QSO_DATABASE* database = nullptr;
-
-    if (!EasyHamLog::QSODatabaseInterface::readDatabase(QSO_DATABASE_DIR, database, &root, true)) {
-        setupSuccess = false;
-        return;
-    }
-    
-    // Register every QSO into the vector and the table
-    EasyHamLog::QSO* current_qso;
-    while ((current_qso = EasyHamLog::QSODatabaseInterface::nextQSO(&root)) != nullptr) {
-        registeredQSOs.insert(registeredQSOs.end(), current_qso);
-        insertRowData(ui->tableWidget, 0, current_qso);
-    }
-
-    delete database;
-
-    // Sort the table after Date and Time
-    ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
-    ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);
+    newSession();
 
     EasyHamLog::CallsignLookup::Initialize();
 }
@@ -101,7 +80,7 @@ void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
         registeredQSOs.push_back(qso);
 
         // Write the new qsos to the database
-        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase(databasePath, registeredQSOs);
 
         // insert it into the table
         insertRowData(ui->tableWidget, 0, qso);
@@ -144,6 +123,7 @@ void EasyHamLog::MainUIApplication::setRowData(QTableWidget* table, int row, Eas
     table->setItem(row, 7, new QTableWidgetItem(_qso.rst.c_str()));
     table->setItem(row, 8, new QTableWidgetItem(_qso.locator.c_str()));
     table->setItem(row, 9, new QTableWidgetItem(_qso.country.c_str()));
+    table->setCellWidget(row, 10, new QCheckBox());
 }
 
 void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso) {
@@ -159,6 +139,17 @@ void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, 
 
     // Set the UUID in the table column
     table->setItem(row, table->columnCount() - 1, new QTableWidgetItem(uuid));
+}
+
+void EasyHamLog::MainUIApplication::newSession()
+{
+    databasePath = QString("saved/session-%1.xml").arg(QDateTime::currentDateTime().toString("dd-MM-yyyy--hh-mm-ss"));
+    qsoRows.clear();
+    registeredQSOs.clear();
+
+    while (ui->tableWidget->rowCount() > 0) {
+        ui->tableWidget->removeRow(0);
+    }
 }
 
 
@@ -203,7 +194,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
         setRowData(ui->tableWidget, rowIndex, qso);
 
         // And save the new database
-        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase(databasePath, registeredQSOs);
 
     }
     else if(ret == QSO_ADD_DIALOG_RESULT_DELETE) {
@@ -230,7 +221,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
         qsoRows.erase(uuid.toStdString());
 
         // And save the new database
-        EasyHamLog::QSODatabaseInterface::writeDatabase(QSO_DATABASE_DIR, registeredQSOs);
+        EasyHamLog::QSODatabaseInterface::writeDatabase(databasePath, registeredQSOs);
     }
 }
 
@@ -242,10 +233,87 @@ void EasyHamLog::MainUIApplication::on_actionPrefix_Lookup_triggered()
 
 void EasyHamLog::MainUIApplication::on_actionExport_Database_triggered()
 {
-    QDir root_dir;
 
+    std::vector<EasyHamLog::QSO*> toExport;
+
+    for (size_t i = 0; i < ui->tableWidget->rowCount(); i++) {
+        QCheckBox* box = (QCheckBox*)ui->tableWidget->cellWidget(i, 10);
+
+        if (box->isChecked()) {
+            std::string uuid = ui->tableWidget->item(i, 11)->text().toStdString();
+
+            for (auto& pair : qsoRows) {
+                if (pair.first == uuid) {
+                    toExport.push_back(pair.second);
+                    break;
+                }
+            }
+        }
+    }
+
+    QDir root_dir;
     if (!root_dir.mkpath("exports")) {
         QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
     }
-    EasyHamLog::ADIInterface::writeADIFile("exports/export.adi", registeredQSOs);
+
+    QString name = QString("exports/export-%1.adi").arg(QDateTime::currentDateTime().toString("dd-MM-yyyy--hh-mm-ss"));
+
+    qInfo(name.toStdString().c_str());
+
+    if (toExport.size() == 0) {
+        int ret = QMessageBox::information(this, "Export Status", "Do you want to export the complete database?", QMessageBox::Yes, QMessageBox::No);
+        
+        if (ret == QMessageBox::Yes) {
+            EasyHamLog::ADIInterface::writeADIFile(name, registeredQSOs);
+        }
+    }else{
+        EasyHamLog::ADIInterface::writeADIFile(name, toExport);
+    }
+
+}
+
+void EasyHamLog::MainUIApplication::on_actionNew_Session_triggered()
+{
+    newSession();
+}
+
+void EasyHamLog::MainUIApplication::on_actionOpen_Session_triggered()
+{
+
+    QFileDialog dialog(this, "Select Database", QApplication::applicationDirPath());
+
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setNameFilter("XML-Files (*.xml)");
+
+    int ret = dialog.exec();
+
+    if (ret == 0) {
+        return;
+    }
+
+    newSession();
+
+    databasePath = dialog.selectedFiles()[0];
+    
+    // Read the local QSO database
+    QSO_DATABASE_ELEMENT root;
+    QSO_DATABASE* database = nullptr;
+
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase(databasePath, database, &root, true)) {
+        //setupSuccess = false;
+        return;
+    }
+
+    // Register every QSO into the vector and the table
+    EasyHamLog::QSO* current_qso;
+    while ((current_qso = EasyHamLog::QSODatabaseInterface::nextQSO(&root)) != nullptr) {
+        registeredQSOs.insert(registeredQSOs.end(), current_qso);
+        insertRowData(ui->tableWidget, 0, current_qso);
+    }
+
+    delete database;
+
+    // Sort the table after Date and Time
+    ui->tableWidget->sortItems(2, MAIN_SORT_ORDER);
+    ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);
 }

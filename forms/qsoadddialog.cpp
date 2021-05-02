@@ -109,7 +109,7 @@ EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
     qso->locator = ui->locatorEdit->text().toStdString();
     qso->opmode = ui->opmodeEdit->text().toStdString();
     qso->rst = ui->rapportEdit->text().toStdString();
-
+    
     return qso;
 }
 
