@@ -11,6 +11,7 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Create and open different sessions
 
 ## TODO's
+- Add functionality for some contests
 - Fill in About me
 - Sort forms directory
 - Make prettier select button
