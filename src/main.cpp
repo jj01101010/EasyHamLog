@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <mainuiapplication.h>
+#include <MainUIApplication/mainuiapplication.h>
 
 int main(int argc, char** argv) {
 

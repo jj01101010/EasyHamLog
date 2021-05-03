@@ -11,7 +11,7 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QBoxLayout>
-#include <AboutMe/AboutMeDialog.h>
+#include <AboutEasyHamLog/AboutEasyHamlog.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -44,6 +44,45 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     newSession();
 
     EasyHamLog::CallsignLookup::Initialize();
+
+    app_version = EHL_APP_VERSION;
+
+    // Convert Version to major, minor, patch
+    QString curr_int = "";
+    unsigned char major = 0, minor = 0, patch = 0;
+    for (int i = 0, dot_counter = 0; i < app_version.size() + 1; i++) {
+        if (app_version[i] == '.' || i == app_version.size()) {
+            switch (dot_counter)
+            {
+            case 0:
+                major = (unsigned char)curr_int.toInt();
+                break;
+            case 1:
+                minor = (unsigned char)curr_int.toInt();
+                break;
+            case 2:
+                patch = (unsigned char)curr_int.toInt();
+                break;
+            default:
+                QMessageBox::critical(this, "Version error", "Could not decode version. To my seperators!", QMessageBox::Ok);
+                break;
+            }
+
+            curr_int = "";
+            dot_counter++;
+            continue;
+        }
+        if (i >= app_version.size()) {
+            break;
+        }
+        curr_int += app_version[i];
+    }
+
+    // Create a hex coded version
+    app_version_encoded = (major << 8) ^ (minor << 4) ^ patch;
+
+    this->setWindowTitle("EasyHamLog - v" + app_version + " - by Jannis Leon Jung - DO9JJ");
+
 }
 
 EasyHamLog::MainUIApplication::~MainUIApplication()
@@ -323,7 +362,7 @@ void EasyHamLog::MainUIApplication::on_actionOpen_Session_triggered()
 
 void EasyHamLog::MainUIApplication::on_actionAbout_me_triggered()
 {
-    AboutMeDialog dialog(this);
+    AboutEasyHamLog dialog(app_version, app_version_encoded, this);  // Version by CMake
     dialog.setModal(true);
     dialog.exec();
 }

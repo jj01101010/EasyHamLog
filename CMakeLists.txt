@@ -64,6 +64,8 @@ endif()
 target_include_directories(EasyHamLog PRIVATE ${FORMS_DIR})
 target_include_directories(EasyHamLog PRIVATE ${INCLUDE_DIR})
 target_include_directories(EasyHamLog PRIVATE ${SOURCE_DIR})
+target_compile_definitions(EasyHamLog PRIVATE EHL_APP_VERSION="${PROJ_VERSION}")
+
 
 #===================== LINKING LIBRARIES =======================#
 target_link_libraries(EasyHamLog Qt5::Widgets Qt5::Core Qt5::Xml Qt5::QuickWidgets)

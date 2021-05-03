@@ -51,6 +51,8 @@ namespace EasyHamLog {
         void newSession();
 
     private:
+        QString app_version;
+        int app_version_encoded;
         QString databasePath;
         std::vector<EasyHamLog::QSO*> registeredQSOs;
         std::unordered_map<std::string, EasyHamLog::QSO*> qsoRows;

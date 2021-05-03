@@ -219,6 +219,9 @@
    <property name="shortcut">
     <string>Q</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionPrefix_Lookup">
    <property name="text">
