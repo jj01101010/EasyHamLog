@@ -17,6 +17,7 @@
 
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
+    app_version_encoded(0),
     ui(new Ui::MainUIApplication)
 {
     ui->setupUi(this);
@@ -45,7 +46,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     EasyHamLog::CallsignLookup::Initialize();
 
-    app_version = EHL_APP_VERSION;
+    this->app_version = EHL_APP_VERSION;
 
     // Convert Version to major, minor, patch
     QString curr_int = "";
@@ -79,7 +80,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     }
 
     // Create a hex coded version
-    app_version_encoded = (major << 8) ^ (minor << 4) ^ patch;
+    this->app_version_encoded = (major << 8) ^ (minor << 4) ^ patch;
 
     this->setWindowTitle("EasyHamLog - v" + app_version + " - by Jannis Leon Jung - DO9JJ");
 
@@ -165,7 +166,22 @@ void EasyHamLog::MainUIApplication::setRowData(QTableWidget* table, int row, Eas
     table->setItem(row, 7, new QTableWidgetItem(_qso.rst.c_str()));
     table->setItem(row, 8, new QTableWidgetItem(_qso.locator.c_str()));
     table->setItem(row, 9, new QTableWidgetItem(_qso.country.c_str()));
-    table->setCellWidget(row, 10, new QCheckBox());
+
+    // Make Check box into a widget enclosure with horizontal layout
+    // If the Widget is by itself it sits on the border of the Table, which looks odd.
+    QWidget* root = new QWidget;
+
+    QBoxLayout* hor_layout = new QBoxLayout(QBoxLayout::Direction::LeftToRight);
+    hor_layout->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+
+    QCheckBox* box = new QCheckBox();
+    box->setObjectName("checkbox");
+    hor_layout->addWidget(box);
+
+    root->setLayout(hor_layout);
+    
+    // Set cell widget
+    table->setCellWidget(row, 10, root);
 }
 
 void EasyHamLog::MainUIApplication::insertRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso) {
@@ -278,9 +294,10 @@ void EasyHamLog::MainUIApplication::on_actionExport_Database_triggered()
 
     std::vector<EasyHamLog::QSO*> toExport;
 
-    for (size_t i = 0; i < ui->tableWidget->rowCount(); i++) {
-        QCheckBox* box = (QCheckBox*)ui->tableWidget->cellWidget(i, 10);
+    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+        QCheckBox* box = ui->tableWidget->cellWidget(i, 10)->findChild<QCheckBox*>("checkbox"); // Get the CheckBox child of the root widget
 
+        // If checked get the QSO and add it into toExport
         if (box->isChecked()) {
             std::string uuid = ui->tableWidget->item(i, 11)->text().toStdString();
 
@@ -295,7 +312,8 @@ void EasyHamLog::MainUIApplication::on_actionExport_Database_triggered()
 
     QDir root_dir;
     if (!root_dir.mkpath("exports")) {
-        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'saved'");
+        QMessageBox::critical(this, "Folder Error!", "Could not create folder 'exoirts'");
+        return;
     }
 
     QString name = QString("exports/export-%1.adi").arg(QDateTime::currentDateTime().toString("dd-MM-yyyy--hh-mm-ss"));
@@ -342,7 +360,6 @@ void EasyHamLog::MainUIApplication::on_actionOpen_Session_triggered()
     QSO_DATABASE* database = nullptr;
 
     if (!EasyHamLog::QSODatabaseInterface::readDatabase(databasePath, database, &root, true)) {
-        //setupSuccess = false;
         return;
     }
 

@@ -12,8 +12,7 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 
 ## TODO's
 - Add functionality for some contests
-- Fill in About me
-- Make prettier select button
+- Find someone for a propper app icon
 - Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
 - (Sync QSOs with [QRZ.com](https://qrz.com))
 - Create buildfiles for Windows and Linux for simpler build steps
