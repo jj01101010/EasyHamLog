@@ -2,7 +2,7 @@
 #define QSOADDDIALOG_H
 
 #include <QDialog>
-#include <mainuiapplication.h>
+#include <MainUIApplication/mainuiapplication.h>
 
 #define QSO_ADD_DIALOG_RESULT_CANCEL 0
 #define QSO_ADD_DIALOG_RESULT_SAVE   1

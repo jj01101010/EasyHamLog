@@ -1,10 +1,10 @@
 #include "mainuiapplication.h"
 #include "ui_mainuiapplication.h"
 #include <QSODatabaseInterface.h>
-#include <qsoadddialog.h>
+#include <QSOAddDialog/qsoadddialog.h>
 #include <QDir>
-#include <qsomap.h>
-#include <prefixlookupdialog.h>
+#include <QSOMap/qsomap.h>
+#include <PrefixLookupDialog/prefixlookupdialog.h>
 #include <CallsignLookup.h>
 #include <ADIInterface.h>
 #include <QCheckBox>

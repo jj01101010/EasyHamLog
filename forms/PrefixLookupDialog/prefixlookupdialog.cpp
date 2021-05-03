@@ -1,6 +1,6 @@
 #include "prefixlookupdialog.h"
 #include "ui_prefixlookupdialog.h"
-#include <mainuiapplication.h>
+#include <MainUIApplication/mainuiapplication.h>
 #include <CallsignLookup.h>
 
 EasyHamLog::PrefixLookupDialog::PrefixLookupDialog(QWidget* parent) :
