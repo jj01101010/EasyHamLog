@@ -6,9 +6,12 @@
 EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited) :
     QDialog(parent),
     parent(parent),
+    contest(false),
     ui(new Ui::QSOAddDialog)
 {
     ui->setupUi(this);
+
+    toggleContest(false);
 
     if (edited != nullptr) {
 
@@ -24,7 +27,12 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
         ui->dateTimeEdit->setDate(QDate::fromString(edited->date.c_str(), "dd.MM.yyyy ddd"));
         ui->locatorEdit->setText(edited->locator.c_str());
         ui->countryEdit->setText(edited->country.c_str());
-        
+
+        if (edited->contest_number != "") {
+            toggleContest();
+            ui->contestNumber->setText(edited->contest_number.c_str());
+        }
+
         ui->title->setText("<p><span style=\" font-size:12pt; font-weight:600; \">Edit QSO</span></p>");
 
     }
@@ -109,7 +117,8 @@ EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
     qso->locator = ui->locatorEdit->text().toStdString();
     qso->opmode = ui->opmodeEdit->text().toStdString();
     qso->rst = ui->rapportEdit->text().toStdString();
-    
+    qso->contest_number = contest ? ui->contestNumber->text().toStdString() : "";
+
     return qso;
 }
 
@@ -126,4 +135,27 @@ void EasyHamLog::QSOAddDialog::on_saveButton_clicked()
 void EasyHamLog::QSOAddDialog::on_cancelButton_clicked()
 {
     this->done(QSO_ADD_DIALOG_RESULT_CANCEL);
+}
+
+void EasyHamLog::QSOAddDialog::on_addContestInfoButton_clicked()
+{
+    toggleContest();
+}
+
+void EasyHamLog::QSOAddDialog::toggleContest(bool change_value)
+{
+    if (change_value) {
+        contest = !contest;
+    }
+
+    if (contest) {
+        ui->contestNumber->show();
+        ui->labelContest->show();
+        ui->addContestInfoButton->setText("-");
+    }
+    else {
+        ui->contestNumber->hide();
+        ui->labelContest->hide();
+        ui->addContestInfoButton->setText("+");
+    }
 }

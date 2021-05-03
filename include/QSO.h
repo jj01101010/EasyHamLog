@@ -14,6 +14,7 @@ namespace EasyHamLog {
         std::string rst;
         std::string locator;
         std::string country;    // TODO: Make Seperate Struct with icon
+        std::string contest_number;
     };
 
     struct Callsign_Prefix {

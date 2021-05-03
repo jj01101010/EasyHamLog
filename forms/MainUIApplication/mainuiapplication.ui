@@ -216,6 +216,12 @@
    <property name="text">
     <string>Quit</string>
    </property>
+   <property name="font">
+    <font>
+     <italic>false</italic>
+     <underline>false</underline>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Q</string>
    </property>
@@ -236,6 +242,11 @@
   <action name="actionNew_Session">
    <property name="text">
     <string>New Session</string>
+   </property>
+   <property name="font">
+    <font>
+     <kerning>true</kerning>
+    </font>
    </property>
   </action>
   <action name="actionOpen_Session">

@@ -37,7 +37,14 @@ namespace EasyHamLog {
 
         void on_cancelButton_clicked();
 
+        void on_addContestInfoButton_clicked();
+
     private:
+        void toggleContest(bool change_value=true);
+
+    private:
+
+        bool contest;
         EasyHamLog::MainUIApplication* parent;
         Ui::QSOAddDialog* ui;
     };
