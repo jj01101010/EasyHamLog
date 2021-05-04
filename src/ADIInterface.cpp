@@ -2,6 +2,8 @@
 #include <QFile>
 #include <QDateTime>
 
+#define CREATE_ADI_FILE_STRING(string, var) QString(string).arg(var.size()).arg(var.c_str()).toStdString().c_str()
+
 bool EasyHamLog::ADIInterface::writeADIFile(const QString& filename, std::vector<EasyHamLog::QSO*> qsos)
 {
 	QFile file(filename);
@@ -17,23 +19,28 @@ bool EasyHamLog::ADIInterface::writeADIFile(const QString& filename, std::vector
 	file.write("<EOH>\n\n");
 
 	for (auto& qso : qsos) {
-		file.write(QString("<CALL:%1>%2\n").arg(qso->callsign.size()).arg(qso->callsign.c_str()).toStdString().c_str());
-		file.write(QString("<BAND:%1>%2\n").arg(qso->band.size()).arg(qso->band.c_str()).toStdString().c_str());
-		file.write(QString("<COUNTRY:%1>%2\n").arg(qso->country.size()).arg(qso->country.c_str()).toStdString().c_str());
-		file.write(QString("<FREQ:%1>%2\n").arg(qso->freq.size()).arg(qso->freq.c_str()).toStdString().c_str());
-		file.write(QString("<MODE:%1>%2\n").arg(qso->opmode.size()).arg(qso->opmode.c_str()).toStdString().c_str());
-		file.write(QString("<NAME:%1>%2\n").arg(qso->name.size()).arg(qso->name.c_str()).toStdString().c_str());
-		file.write(QString("<RST_SENT:%1>%2\n").arg(qso->rst.size()).arg(qso->rst.c_str()).toStdString().c_str());
-		file.write(QString("<GRIDSQUARE:%1>%2\n").arg(qso->locator.size()).arg(qso->locator.c_str()).toStdString().c_str());
+		file.write(CREATE_ADI_FILE_STRING("<CALL:%1>%2\n", qso->callsign));
+		file.write(CREATE_ADI_FILE_STRING("<BAND:%1>%2\n", qso->band));
+		file.write(CREATE_ADI_FILE_STRING("<COUNTRY:%1>%2\n", qso->country));
+		file.write(CREATE_ADI_FILE_STRING("<FREQ:%1>%2\n", qso->freq));
+		file.write(CREATE_ADI_FILE_STRING("<MODE:%1>%2\n", qso->opmode));
+		file.write(CREATE_ADI_FILE_STRING("<NAME:%1>%2\n", qso->name));
+		file.write(CREATE_ADI_FILE_STRING("<RST_SENT:%1>%2\n", qso->rst));
+		file.write(CREATE_ADI_FILE_STRING("<GRIDSQUARE:%1>%2\n", qso->locator));
 
+		if (qso->contest_number != "" || qso->contest_info != "") {
+			file.write(CREATE_ADI_FILE_STRING("<SRX_STRING:%1>%2\n", qso->contest_info));
+			file.write(CREATE_ADI_FILE_STRING("<SRX:%1>%2\n", qso->contest_number));
+		}
+		
 		QDate tempDate = QDate::fromString(qso->date.c_str(), "dd.MM.yyyy ddd");
 		QTime tempTime = QTime::fromString(qso->time.c_str());
 		
 		QString tempDateString = tempDate.toString("yyyyMMdd");
 		QString tempTimeString = tempTime.toString("hhmm");
 
-		file.write(QString("<QSO_DATE:%1>%2\n").arg(tempDateString.size()).arg(tempDateString).toStdString().c_str()); 
-		file.write(QString("<time_on:%1>%2\n").arg(tempTimeString.size()).arg(tempTimeString).toStdString().c_str());
+		file.write(CREATE_ADI_FILE_STRING("<QSO_DATE:%1>%2\n", tempDateString.toStdString()));
+		file.write(CREATE_ADI_FILE_STRING("<TIME_ON:%1>%2\n", tempTimeString.toStdString()));
 		file.write("<EOR>\n\n");
 	}
 

@@ -58,6 +58,7 @@ EasyHamLog::QSO* EasyHamLog::QSODatabaseInterface::nextQSO(QSO_DATABASE_ELEMENT*
     qso->locator = element.attribute("locator", "").toStdString();
     qso->country = element.attribute("country", "").toStdString();
     qso->contest_number = element.attribute("contest_number", "").toStdString();
+    qso->contest_info = element.attribute("contest_info", "").toStdString();
     
     return qso;
 }
@@ -86,6 +87,7 @@ bool EasyHamLog::QSODatabaseInterface::writeDatabase(const QString& name, std::v
         qso_element.setAttribute("locator", qso->locator.c_str());
         qso_element.setAttribute("country", qso->country.c_str());
         qso_element.setAttribute("contest_number", qso->contest_number.c_str());
+        qso_element.setAttribute("contest_info", qso->contest_info.c_str());
 
         document_root.appendChild(qso_element);
     }

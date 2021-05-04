@@ -11,7 +11,6 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Create and open different sessions
 
 ## TODO's
-- Add contest functions to ADI file
 - Find someone for a propper app icon
 - Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
 - Create buildfiles for Windows and Linux for simpler build steps

@@ -15,7 +15,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
 
     if (edited != nullptr) {
 
-        // If there is a qso as a template set every form
+        // If there is a qso as a template set every form element
 
         ui->callsignEdit->setText(edited->callsign.c_str());
         ui->nameEdit->setText(edited->name.c_str());
@@ -30,7 +30,8 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
 
         if (edited->contest_number != "") {
             toggleContest();
-            ui->contestNumber->setText(edited->contest_number.c_str());
+            ui->contestNumberEdit->setText(edited->contest_number.c_str());
+            ui->contestInfoEdit->setText(edited->contest_info.c_str());
         }
 
         ui->title->setText("<p><span style=\" font-size:12pt; font-weight:600; \">Edit QSO</span></p>");
@@ -117,7 +118,8 @@ EasyHamLog::QSO* EasyHamLog::QSOAddDialog::getQSO() const {
     qso->locator = ui->locatorEdit->text().toStdString();
     qso->opmode = ui->opmodeEdit->text().toStdString();
     qso->rst = ui->rapportEdit->text().toStdString();
-    qso->contest_number = contest ? ui->contestNumber->text().toStdString() : "";
+    qso->contest_number = contest ? ui->contestNumberEdit->text().toStdString() : "";
+    qso->contest_info = contest ? ui->contestInfoEdit->text().toStdString() : "";
 
     return qso;
 }
@@ -148,14 +150,9 @@ void EasyHamLog::QSOAddDialog::toggleContest(bool change_value)
         contest = !contest;
     }
 
-    if (contest) {
-        ui->contestNumber->show();
-        ui->labelContest->show();
-        ui->addContestInfoButton->setText("-");
-    }
-    else {
-        ui->contestNumber->hide();
-        ui->labelContest->hide();
-        ui->addContestInfoButton->setText("+");
-    }
+    ui->contestNumberEdit->setHidden(!contest);
+    ui->contestInfoEdit->setHidden(!contest);
+    ui->labelContestInfo->setHidden(!contest);
+    ui->labelContestNumber->setHidden(!contest);
+    ui->addContestInfoButton->setText(contest ? "-" : "+");   
 }
