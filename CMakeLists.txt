@@ -17,6 +17,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 message(STATUS "$ENV{QTDIR}\\lib\\cmake\\Qt5")
 set(Qt5_DIR "$ENV{QTDIR}\\lib\\cmake\\Qt5")
+
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Xml REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
