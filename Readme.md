@@ -14,7 +14,7 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Find someone for a propper app icon
 - Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
 - Create buildfiles for Windows and Linux for simpler build steps
-- Create Windows and Mac installer
+- Mac installer
 
 ## Bugs
 
@@ -22,12 +22,20 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 
 ### Installation Linux (from source)
 1. Clone or download the repository
-2. Download Pre-Requisites: ```sudo apt-get install cmake make build-essential qt5-default```
-3. Make a new build folder inside the repository: ```mkdir build```
-4. Configure the project: ```cmake -S. -Bbuild```
-5. Build the project: ```cmake --build build```
-6. Copy "tools/prefix_lookup.xml" into "build/lookups"
+2. Run installer_linux.sh from the EasyHamLog folder
+3. EasyHamLog is now installed in your EasyHamLog/build folder
 
-### TODO: Installation Windows
+### Installation Windows (from source)
+1. Clone or download the repository
+2. Download and install [CMake](https://cmake.org/) and [Qt5](https://www.qt.io/)
+3. Create a new System Variable called QTDIR and point it to QR_INSTALL_DIR\QT_VERSION\USED_COMPILER
+4. Either add QR_INSTALL_DIR\QT_VERSION\USED_COMPILER\bin to your Systems PATH variable or have a look at the next Chapter
+5. Run BuildWinXX.bat from the EasyHamLog folder
+
+## Install EasyHamLog with the DLLs directly in your executable folder
+1. Run BuildWinXX.bat normally
+2. Copy Qt5Core.dll, Qt5Gui.dll, Qt5Widgets.dll and Qt5Xml.dll from QR_INSTALL_DIR\QT_VERSION\USED_COMPILER\bin into the executables directory
+3. Copy QR_INSTALL_DIR\QT_VERSION\USED_COMPILER\plugins\platforms\qwindows.dll into EXE_DIRECTORY\plugins\platforms
+4. Copy QR_INSTALL_DIR\QT_VERSION\USED_COMPILER\plugins\styles\qwindowsvistastyle.dll into EXE_DIRECTORY\plugins\styles
 
 ### TODO: Installation MacOS (from source)
