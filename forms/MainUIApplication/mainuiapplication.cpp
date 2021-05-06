@@ -15,6 +15,18 @@
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
+#ifdef _WIN64
+#define _APP_OS "Win64"
+#elif _WIN32
+#define _APP_OS "Win32"
+#elif __APPLE__ || __MACH__
+#define _APP_OS "MACOS"
+#elif __linux__
+#define _APP_OS "Linux"
+#else
+#define _APP_OS "Undefined"
+#endif
+
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
     app_version_encoded(0),
@@ -82,7 +94,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     // Create a hex coded version
     this->app_version_encoded = (major << 8) ^ (minor << 4) ^ patch;
 
-    this->setWindowTitle("EasyHamLog - v" + app_version + " - by Jannis Leon Jung - DO9JJ");
+    this->setWindowTitle("EasyHamLog - v" + app_version + " - " + _APP_OS + " - by Jannis Leon Jung - DO9JJ");
 
 }
 
