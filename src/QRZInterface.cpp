@@ -1,4 +1,5 @@
 #include "..\include\QRZInterface.h"
+#include <QMessageBox>
 
 EasyHamLog::QRZInterface* EasyHamLog::QRZInterface::instance = 0;
 
@@ -21,22 +22,25 @@ void EasyHamLog::QRZInterface::networkManagerFinishedCallback(QNetworkReply* net
 	QDomDocument* replyDocument = new QDomDocument;
 	replyDocument->setContent(reply);
 	QDomElement qrzDatabaseElement = replyDocument->firstChildElement();
+	qInfo() << qrzDatabaseElement.text();
+
+	QDomNodeList qrzSessionElements = qrzDatabaseElement.elementsByTagName("Session");
+	if (qrzSessionElements.count() <= 0) {
+		return;
+	}
+	QDomElement session = qrzSessionElements.at(0).toElement();
+
+	QDomNodeList sessionErrors = session.elementsByTagName("Error");
+	if (sessionErrors.count() > 0) {
+		qInfo() << "QRZ Error: " << sessionErrors.at(0).toElement().text();
+		pendingRequests.pop();
+		return;
+	}
+
 
 	if (pendingRequests.front() == EasyHamLog::QRZInterfaceRequestType::LOGIN_REQUEST) {
 		pendingRequests.pop();
 
-		QDomNodeList qrzSessionElements = qrzDatabaseElement.elementsByTagName("Session");
-		if (qrzSessionElements.count() <= 0) {
-			return;
-		}
-
-		QDomElement session = qrzSessionElements.at(0).toElement();
-		QDomNodeList sessionErrors = session.elementsByTagName("Error");
-		if (sessionErrors.count() > 0) {
-			qInfo() << "QRZ Error: " << sessionErrors.at(0).toElement().text();
-			QRZInterface::getOpenQRZInterface()->isLoggedIn = false;
-			return;
-		}
 		QDomNodeList sessionKeys = session.elementsByTagName("Key");
 		if (sessionKeys.count() > 0) {
 			QRZInterface::getOpenQRZInterface()->sessionKey = sessionKeys.at(0).toElement().text().toStdString();
@@ -47,7 +51,13 @@ void EasyHamLog::QRZInterface::networkManagerFinishedCallback(QNetworkReply* net
 		}
 	}
 	else if (pendingRequests.front() == EasyHamLog::QRZInterfaceRequestType::DATABASE_REQUEST) {
+		pendingRequests.pop();
 
+		QDomNodeList callsignKeys = qrzDatabaseElement.elementsByTagName("Callsign");
+		if (callsignKeys.count() <= 0) {
+			return;
+		}
+		callsignReply = callsignKeys.at(0).toElement();
 	}
 }
 
@@ -74,11 +84,35 @@ void EasyHamLog::QRZInterface::login(std::string uname, std::string pwd)
 
 bool EasyHamLog::QRZInterface::HasLoggedIn() const
 {
-	qInfo() << isLoggedIn;
 	return isLoggedIn && sessionKey != "";
 }
 
 bool EasyHamLog::QRZInterface::HasPendingRequests() const
 {
 	return pendingRequests.size() != 0;
+}
+
+EasyHamLog::QSO* EasyHamLog::QRZInterface::findQSOInQRZ(std::string callsign)
+{
+	if (isLoggedIn) {
+		pendingRequests.push(EasyHamLog::QRZInterfaceRequestType::DATABASE_REQUEST);
+		QNetworkReply* reply = manager->get(QNetworkRequest(QUrl((qrz_host_name + "?s=" + sessionKey + ";callsign=" + callsign).c_str())));
+		
+		QEventLoop loop;
+		QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		loop.exec();
+
+		if (callsignReply.isNull()) {
+			return nullptr;
+		}
+
+		EasyHamLog::QSO* ham_member = new EasyHamLog::QSO;
+		
+		ham_member->name = callsignReply.elementsByTagName("fname").count() > 0 ? callsignReply.elementsByTagName("fname").at(0).toElement().text().toStdString() : "";
+		ham_member->locator = callsignReply.elementsByTagName("grid").count() > 0 ? callsignReply.elementsByTagName("grid").at(0).toElement().text().toStdString() : "";
+		ham_member->country = callsignReply.elementsByTagName("country").count() > 0 ? callsignReply.elementsByTagName("country").at(0).toElement().text().toStdString() : "";
+
+		return ham_member;
+	}
+	return nullptr;
 }

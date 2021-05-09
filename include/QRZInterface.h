@@ -5,6 +5,7 @@
 #include <string>
 #include <QtXml>
 #include <queue>
+#include <QSO.h>
 
 namespace EasyHamLog {
 
@@ -27,6 +28,8 @@ namespace EasyHamLog {
 
 		bool HasPendingRequests() const;
 
+		EasyHamLog::QSO* findQSOInQRZ(std::string callsign);
+
 	private:
 
 		QRZInterface();
@@ -35,6 +38,8 @@ namespace EasyHamLog {
 
 	private:
 		static QRZInterface* instance;
+
+		QDomElement callsignReply;
 
 		const std::string qrz_host_name = "http://xmldata.qrz.com/xml/current/";
 

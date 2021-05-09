@@ -133,6 +133,11 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
             loginQRZ.getLoginCredentials(&preferences->callsign, &password);
 
             QRZInterface::getOpenQRZInterface()->login(preferences->callsign, password);
+
+            // TODO: Save prefernces if callsign is different
+        }
+        else {
+            preferences->useQRZ = false;
         }
     }
 

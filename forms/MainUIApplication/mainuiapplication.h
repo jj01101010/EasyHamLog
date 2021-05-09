@@ -25,6 +25,7 @@ namespace EasyHamLog {
 
         EasyHamLog::QSO* findQSOByCallsign(const std::string& callsign) const;
 
+        EasyHamLog::Preferences* preferences;
     private slots:
         void on_addContactButton_clicked();
         void on_findContactEdit_textEdited(const QString& arg1);
@@ -53,7 +54,6 @@ namespace EasyHamLog {
 
     private:
 
-        EasyHamLog::Preferences* preferences;
         QString app_version;
         int app_version_encoded;
         QString databasePath;

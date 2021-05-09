@@ -2,6 +2,7 @@
 #include "ui_qsoadddialog.h"
 #include <QMessageBox>
 #include <CallsignLookup.h>
+#include <QRZInterface.h>
 
 EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited) :
     QDialog(parent),
@@ -70,6 +71,28 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
     EasyHamLog::QSO* qso = parent->findQSOByCallsign(callsign.toStdString());
 
     if (qso == nullptr) {
+
+        if (parent->preferences->useQRZ) {
+            if (QRZInterface::getOpenQRZInterface()->HasLoggedIn()) {
+
+                EasyHamLog::QSO* ham_member = QRZInterface::getOpenQRZInterface()->findQSOInQRZ(callsign.toStdString());
+
+                if (ham_member != nullptr) {
+                    ui->locatorEdit->setText(ham_member->locator.c_str());
+                    ui->nameEdit->setText(ham_member->name.c_str());
+                    ui->countryEdit->setText(ham_member->country.c_str());
+                }
+
+                delete ham_member;
+
+            }
+        }
+
+        if (ui->countryEdit->text() != "") {    // Already set the country
+            ui->frequencyEdit->setFocus();  // Skip Prename edit, because it is already set
+            return;
+        }
+
         // get the prefix of the callsign by the last number in the callsign
         QString prefix;
         for (int i = callsign.length() - 1; i >= 0; i--) {
