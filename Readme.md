@@ -1,7 +1,7 @@
 # EasyHamLog
 
 ## 1.0 Idea
-My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy cross-compilation while still having a lot of nice to have features like Maps, sync with [QRZ.com](https://qrz.com) and lookup tables for different ham-radio related stuff 
+My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy cross-compilation while still having a lot of nice to have features like Maps, sync with [QRZ.com](https://qrz.com) and lookup tables for different ham-radio related stuff. 
 
 ## 2.0 Features
 - Manage QSOs
@@ -13,7 +13,6 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 ## 3. 0 TODO's
 - Find someone for a propper app icon
 - Add Map with QSO Locations + additional Information (Distance, Rapport, etc.)
-- Create buildfiles for Windows and Linux for simpler build steps
 - Mac installer
 
 ## 4.0 Bugs

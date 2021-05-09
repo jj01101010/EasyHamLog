@@ -47,6 +47,7 @@ namespace EasyHamLog {
         bool contest;
         EasyHamLog::MainUIApplication* parent;
         Ui::QSOAddDialog* ui;
+
     };
 
 }

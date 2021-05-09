@@ -24,4 +24,9 @@ namespace EasyHamLog {
         int cq_region = 0;
         int itu_region = 0;
     };
+
+    struct Preferences {
+        bool useQRZ;
+        std::string callsign;
+    };
 }

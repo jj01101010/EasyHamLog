@@ -29,9 +29,9 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>About EasyHamLog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>9</x>

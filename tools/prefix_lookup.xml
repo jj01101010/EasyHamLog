@@ -66,9 +66,9 @@
     <PREFIX name="United Kingdom" prefix="GA-GZ"/>
     <PREFIX name="Hungary" prefix="HA"/>
     <PREFIX name="Switzerland" prefix="HB"/>
+    <PREFIX name="Liechtenstein" prefix="HB3Y"/>
     <PREFIX name="Liechtenstein" prefix="HB0"/>
     <PREFIX name="Liechtenstein" prefix="HBL"/>
-    <PREFIX name="Liechtenstein" prefix="HB3Y"/>
     <PREFIX name="Ecuador" prefix="HC-HD"/>
     <PREFIX name="Switzerland" prefix="HE"/>
     <PREFIX name="Poland" prefix="HF"/>
@@ -93,6 +93,7 @@
     <PREFIX name="Nicaragua" prefix="H6-H7"/>
     <PREFIX name="Panama" prefix="H8-H9"/>
     <PREFIX name="Italy" prefix="I"/>
+    <PREFIX name="Italy" prefix="IA-IZ"/>
     <PREFIX name="Japan" prefix="JA-JS"/>
     <PREFIX name="Mongolia" prefix="JT-JV"/>
     <PREFIX name="Norway" prefix="JW-JX"/>

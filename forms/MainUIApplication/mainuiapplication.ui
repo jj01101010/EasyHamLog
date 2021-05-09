@@ -205,9 +205,16 @@
     <property name="title">
      <string>Information</string>
     </property>
-    <addaction name="actionAbout_me"/>
+    <addaction name="actionAbout_EHL"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings_2">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionPreferences"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuSettings_2"/>
    <addaction name="menuSettings"/>
    <addaction name="menuInformation"/>
   </widget>
@@ -217,10 +224,7 @@
     <string>Quit</string>
    </property>
    <property name="font">
-    <font>
-     <italic>false</italic>
-     <underline>false</underline>
-    </font>
+    <font/>
    </property>
    <property name="shortcut">
     <string>Q</string>
@@ -244,9 +248,7 @@
     <string>New Session</string>
    </property>
    <property name="font">
-    <font>
-     <kerning>true</kerning>
-    </font>
+    <font/>
    </property>
   </action>
   <action name="actionOpen_Session">
@@ -254,9 +256,14 @@
     <string>Open Session</string>
    </property>
   </action>
-  <action name="actionAbout_me">
+  <action name="actionAbout_EHL">
    <property name="text">
-    <string>About me</string>
+    <string>About EasyHamLog</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
  </widget>

@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>470</width>
-    <height>95</height>
+    <height>119</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Prefix Lookup</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -86,12 +86,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>109</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>274</y>
+     <y>118</y>
     </hint>
    </hints>
   </connection>
@@ -102,12 +102,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>109</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>274</y>
+     <y>118</y>
     </hint>
    </hints>
   </connection>

@@ -12,6 +12,9 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <AboutEasyHamLog/AboutEasyHamlog.h>
+#include <QRZInterface.h>
+#include <PreferencesDialog/PreferencesDialog.h>
+#include <LoginQRZ/LoginQRZ.h>
 
 #define MAIN_SORT_ORDER Qt::DescendingOrder     // Sorting order of the QSOs (date and time)
 
@@ -48,8 +51,8 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
         return;
     }
 
-    if (!root_dir.mkpath("./lookups")) {
-        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'lookups'");
+    if (!root_dir.mkpath("./settings")) {
+        QMessageBox::warning(this, "Folder Error!", "Could not create folder 'settings'");
         setupSuccess = false;
         return;
     }
@@ -96,6 +99,43 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     this->setWindowTitle("EasyHamLog - v" + app_version + " - " + _APP_OS + " - by Jannis Leon Jung - DO9JJ");
 
+
+    QDomDocument* database = nullptr;
+    QDomElement root;
+
+    // Read the Prefix list and store it in the unsorted_list
+    if (!EasyHamLog::QSODatabaseInterface::readDatabase("settings/preferences.xml", database, &root, true)) {
+        setupSuccess = false;
+        return;
+    }
+
+    QDomElement current_prefix;
+    preferences = new EasyHamLog::Preferences;
+
+    while (!(current_prefix = EasyHamLog::QSODatabaseInterface::nextElement(&root)).isNull()) {
+        if (current_prefix.nodeName() == "callsign") {
+            preferences->callsign = current_prefix.text().toStdString();
+        }
+        else if (current_prefix.nodeName() == "use_qrz") {
+            preferences->useQRZ = current_prefix.text().toInt() == 1;
+        }
+    }
+
+    delete database;
+
+    
+    if (preferences->useQRZ) {
+        LoginQRZ loginQRZ(preferences->callsign, this);
+        loginQRZ.setModal(true);
+
+        if (loginQRZ.exec()) {
+            std::string password;
+            loginQRZ.getLoginCredentials(&preferences->callsign, &password);
+
+            QRZInterface::getOpenQRZInterface()->login(preferences->callsign, password);
+        }
+    }
+
 }
 
 EasyHamLog::MainUIApplication::~MainUIApplication()
@@ -105,6 +145,7 @@ EasyHamLog::MainUIApplication::~MainUIApplication()
         delete qso;
     }
     delete ui;
+    delete preferences;
 
     EasyHamLog::CallsignLookup::Destroy();
 }
@@ -324,7 +365,7 @@ void EasyHamLog::MainUIApplication::on_actionExport_Database_triggered()
 
     QDir root_dir;
     if (!root_dir.mkpath("exports")) {
-        QMessageBox::critical(this, "Folder Error!", "Could not create folder 'exoirts'");
+        QMessageBox::critical(this, "Folder Error!", "Could not create folder 'exports'");
         return;
     }
 
@@ -389,9 +430,53 @@ void EasyHamLog::MainUIApplication::on_actionOpen_Session_triggered()
     ui->tableWidget->sortItems(3, MAIN_SORT_ORDER);
 }
 
-void EasyHamLog::MainUIApplication::on_actionAbout_me_triggered()
+void EasyHamLog::MainUIApplication::on_actionAbout_EHL_triggered()
 {
     AboutEasyHamLog dialog(app_version, app_version_encoded, this);  // Version by CMake
     dialog.setModal(true);
     dialog.exec();
+}
+
+void EasyHamLog::MainUIApplication::on_actionPreferences_triggered()
+{
+    PreferencesDialog preferences(preferences, this);
+    preferences.setModal(true);
+    int ret = preferences.exec();
+    
+    if (ret) {
+        delete this->preferences;
+        EasyHamLog::Preferences* changedPreferences = preferences.getPreferences();
+        this->preferences = changedPreferences;
+        
+
+        QDomDocument* database = new QDomDocument;
+        
+        QDomElement root = database->createElement("Preferences");
+        
+        QDomElement child = database->createElement("callsign");
+        child.appendChild(database->createTextNode(this->preferences->callsign.c_str()));
+        root.appendChild(child);
+        
+        child = database->createElement("use_qrz");
+        child.appendChild(database->createTextNode(std::to_string(this->preferences->useQRZ ? 1 : 0).c_str()));
+        root.appendChild(child);
+        
+        database->appendChild(root);
+
+        QFile file("settings/preferences.xml");
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(this, "File Error!", "Could not open 'settings/prefernces.xml'");
+            return;
+        }
+
+        QTextStream stream(&file);
+        stream << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";   // Add xml header
+        stream << database->toString();                             // Write the empty database
+
+        file.close();
+
+
+        delete database;
+    }
+
 }

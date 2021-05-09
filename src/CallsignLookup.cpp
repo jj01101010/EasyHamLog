@@ -2,7 +2,7 @@
 #include <QSODatabaseInterface.h>
 #include <string>
 
-#define PREFIX_DATABASE_DIR "lookups/prefix_lookup.xml"
+#define PREFIX_DATABASE_DIR "settings/prefix_lookup.xml"
 
 std::vector<EasyHamLog::Callsign_Prefix*> EasyHamLog::CallsignLookup::prefixes;
 

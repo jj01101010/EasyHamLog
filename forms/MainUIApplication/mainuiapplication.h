@@ -6,7 +6,6 @@
 #include <string>
 #include <QTableWidget>
 #include <unordered_map>
-
 #include <QSO.h>
 
 namespace Ui {
@@ -42,7 +41,9 @@ namespace EasyHamLog {
 
         void on_actionOpen_Session_triggered();
 
-        void on_actionAbout_me_triggered();
+        void on_actionAbout_EHL_triggered();
+
+        void on_actionPreferences_triggered();
 
     private:
         void setRowData(QTableWidget* table, int row, EasyHamLog::QSO* qso);
@@ -51,6 +52,8 @@ namespace EasyHamLog {
         void newSession();
 
     private:
+
+        EasyHamLog::Preferences* preferences;
         QString app_version;
         int app_version_encoded;
         QString databasePath;

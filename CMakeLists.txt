@@ -22,6 +22,7 @@ find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Xml REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS QuickWidgets REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
 
 #=================== INCLUSION OF Project Files ====================#
 set(FORMS_DIR "${CMAKE_SOURCE_DIR}/forms")
@@ -69,4 +70,4 @@ target_compile_definitions(EasyHamLog PRIVATE EHL_APP_VERSION="${PROJ_VERSION}")
 
 
 #===================== LINKING LIBRARIES =======================#
-target_link_libraries(EasyHamLog Qt5::Widgets Qt5::Core Qt5::Xml Qt5::QuickWidgets)
+target_link_libraries(EasyHamLog Qt5::Widgets Qt5::Core Qt5::Xml Qt5::QuickWidgets Qt5::Network)

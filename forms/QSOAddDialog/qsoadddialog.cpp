@@ -34,6 +34,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
             ui->contestInfoEdit->setText(edited->contest_info.c_str());
         }
 
+        setWindowTitle("Edit QSO");
         ui->title->setText("<p><span style=\" font-size:12pt; font-weight:600; \">Edit QSO</span></p>");
 
     }
@@ -44,6 +45,7 @@ EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, Ea
 
         ui->dateTimeEdit->setDateTime(QDateTime::currentDateTimeUtc());
     }
+
 }
 
 EasyHamLog::QSOAddDialog::~QSOAddDialog()
