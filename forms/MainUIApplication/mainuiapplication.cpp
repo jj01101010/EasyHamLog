@@ -125,20 +125,25 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     
     if (preferences->useQRZ) {
-        LoginQRZ loginQRZ(preferences->callsign, this);
-        loginQRZ.setModal(true);
+        bool firstTry = true;
+        do {
+            LoginQRZ loginQRZ(preferences->callsign, firstTry, this);
+            loginQRZ.setModal(true);
+            if (loginQRZ.exec()) {
+                std::string password;
+                loginQRZ.getLoginCredentials(&preferences->callsign, &password);
 
-        if (loginQRZ.exec()) {
-            std::string password;
-            loginQRZ.getLoginCredentials(&preferences->callsign, &password);
+                QRZInterface::getOpenQRZInterface()->login(preferences->callsign, password);
 
-            QRZInterface::getOpenQRZInterface()->login(preferences->callsign, password);
-
-            // TODO: Save prefernces if callsign is different
-        }
-        else {
-            preferences->useQRZ = false;
-        }
+                // TODO: Save prefernces if callsign is different
+            }
+            else {
+                preferences->useQRZ = false;
+                break;
+            }
+            firstTry = false;
+        } while (!QRZInterface::getOpenQRZInterface()->HasLoggedIn());
+        
     }
 
 }

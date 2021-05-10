@@ -13,7 +13,7 @@ class LoginQRZ : public QDialog
     Q_OBJECT
 
 public:
-    explicit LoginQRZ(std::string callsign, QWidget *parent = nullptr);
+    explicit LoginQRZ(std::string callsign, bool firstTry, QWidget *parent = nullptr);
     ~LoginQRZ();
 
     void getLoginCredentials(std::string* username, std::string* password) const;

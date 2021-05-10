@@ -78,7 +78,13 @@ void EasyHamLog::QRZInterface::login(std::string uname, std::string pwd)
 {
 	if (!isLoggedIn) {
 		pendingRequests.push(EasyHamLog::QRZInterfaceRequestType::LOGIN_REQUEST);
-		manager->get(QNetworkRequest(QUrl((qrz_host_name + "?username=" + uname + ";password=" + pwd).c_str())));
+		QNetworkReply* reply = manager->get(QNetworkRequest(QUrl((qrz_host_name + "?username=" + uname + ";password=" + pwd).c_str())));
+
+		// Wait for login to finish
+		QEventLoop loop;
+		QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		loop.exec();
+
 	}
 }
 

@@ -7,8 +7,10 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 - Manage QSOs
 - Search for QSOs in the current database
 - Automatic lookup for country prefixes
-- Export QSO session to ADI file format (used by e.g. [QRZ.com](https://qrz.com))
+- Export QSO session to ADI file format
 - Create and open different sessions
+- Look up callsigns in [QRZ.com](https://qrz.com) automatically
+- Contest functionality
 
 ## 3. 0 TODO's
 - Find someone for a propper app icon

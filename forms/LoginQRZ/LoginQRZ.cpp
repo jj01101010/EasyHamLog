@@ -1,7 +1,7 @@
 #include "LoginQRZ.h"
 #include "ui_LoginQRZ.h"
 
-LoginQRZ::LoginQRZ(std::string username, QWidget *parent) :
+LoginQRZ::LoginQRZ(std::string username, bool firstTry, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LoginQRZ)
 {
@@ -10,6 +10,11 @@ LoginQRZ::LoginQRZ(std::string username, QWidget *parent) :
 
     if (username != "") {
         ui->passwordEdit->setFocus();
+    }
+
+    if (!firstTry) {
+        QLabel* tryAgain = new QLabel("<p style=\"color: red;\"><b>Wrong password or username. Try again.</b></p>");
+        ui->verticalLayout_2->addWidget(tryAgain);
     }
 }
 
