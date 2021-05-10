@@ -52,6 +52,8 @@ namespace EasyHamLog {
 
         void newSession();
 
+        void savePreferences();
+
     private:
 
         QString app_version;

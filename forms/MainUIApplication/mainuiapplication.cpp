@@ -135,7 +135,9 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
                 QRZInterface::getOpenQRZInterface()->login(preferences->callsign, password);
 
-                // TODO: Save prefernces if callsign is different
+                if (QRZInterface::getOpenQRZInterface()->HasLoggedIn()) {
+                    savePreferences();
+                }
             }
             else {
                 preferences->useQRZ = false;
@@ -271,6 +273,35 @@ void EasyHamLog::MainUIApplication::newSession()
     while (ui->tableWidget->rowCount() > 0) {
         ui->tableWidget->removeRow(0);
     }
+}
+
+void EasyHamLog::MainUIApplication::savePreferences()
+{
+    QDomDocument database;
+
+    QDomElement root = database.createElement("Preferences");
+
+    QDomElement child = database.createElement("callsign");
+    child.appendChild(database.createTextNode(this->preferences->callsign.c_str()));
+    root.appendChild(child);
+
+    child = database.createElement("use_qrz");
+    child.appendChild(database.createTextNode(std::to_string(this->preferences->useQRZ ? 1 : 0).c_str()));
+    root.appendChild(child);
+
+    database.appendChild(root);
+
+    QFile file("settings/preferences.xml");
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(this, "File Error!", "Could not open 'settings/prefernces.xml'");
+        return;
+    }
+
+    QTextStream stream(&file);
+    stream << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";   // Add xml header
+    stream << database.toString();                             // Write the empty database
+
+    file.close();
 }
 
 
@@ -457,36 +488,8 @@ void EasyHamLog::MainUIApplication::on_actionPreferences_triggered()
         delete this->preferences;
         EasyHamLog::Preferences* changedPreferences = preferences.getPreferences();
         this->preferences = changedPreferences;
-        
 
-        QDomDocument* database = new QDomDocument;
-        
-        QDomElement root = database->createElement("Preferences");
-        
-        QDomElement child = database->createElement("callsign");
-        child.appendChild(database->createTextNode(this->preferences->callsign.c_str()));
-        root.appendChild(child);
-        
-        child = database->createElement("use_qrz");
-        child.appendChild(database->createTextNode(std::to_string(this->preferences->useQRZ ? 1 : 0).c_str()));
-        root.appendChild(child);
-        
-        database->appendChild(root);
-
-        QFile file("settings/preferences.xml");
-        if (!file.open(QIODevice::WriteOnly)) {
-            QMessageBox::critical(this, "File Error!", "Could not open 'settings/prefernces.xml'");
-            return;
-        }
-
-        QTextStream stream(&file);
-        stream << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";   // Add xml header
-        stream << database->toString();                             // Write the empty database
-
-        file.close();
-
-
-        delete database;
+        savePreferences();
     }
 
 }
