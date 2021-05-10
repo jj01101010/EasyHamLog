@@ -41,3 +41,17 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 4. Copy QR_INSTALL_DIR\QT_VERSION\USED_COMPILER\plugins\styles\qwindowsvistastyle.dll into EXE_DIRECTORY\plugins\styles
 
 ### <b>5.3. TODO: Installation MacOS (from source)</b>
+
+## 6 Screenshots
+
+Empty Session:
+
+![Homescreen-no-QSOs](./Readme-Images/Homescreen-no-qsos.PNG)
+
+QSO session:
+
+![Homescreen-no-QSOs](./Readme-Images/Homescreen-QSOs.PNG)
+
+Add new QSO:
+
+![Homescreen-no-QSOs](./Readme-Images/Add-QSO.PNG)
