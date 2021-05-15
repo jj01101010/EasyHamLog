@@ -42,7 +42,10 @@ My idea for EasyHamLog was to create a simple open-source QSO-logbook with easy 
 
 ### <b>5.3. TODO: Installation MacOS (from source)</b>
 
-## 6 Screenshots
+## 6 Troubleshooting
+- When using Linux Qt5, you may have to execute ```xhost +``` before running ```sudo ./EasyHamLog```
+
+## 7 Screenshots
 
 Empty Session:
 
