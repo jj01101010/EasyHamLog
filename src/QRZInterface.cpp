@@ -1,4 +1,4 @@
-#include "..\include\QRZInterface.h"
+#include "../include/QRZInterface.h"
 #include <QMessageBox>
 
 EasyHamLog::QRZInterface* EasyHamLog::QRZInterface::instance = 0;

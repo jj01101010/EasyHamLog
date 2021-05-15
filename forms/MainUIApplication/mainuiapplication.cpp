@@ -480,7 +480,7 @@ void EasyHamLog::MainUIApplication::on_actionAbout_EHL_triggered()
 
 void EasyHamLog::MainUIApplication::on_actionPreferences_triggered()
 {
-    PreferencesDialog preferences(preferences, this);
+    PreferencesDialog preferences(this->preferences, this);
     preferences.setModal(true);
     int ret = preferences.exec();
     
