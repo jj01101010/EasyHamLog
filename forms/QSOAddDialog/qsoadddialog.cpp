@@ -72,19 +72,16 @@ void EasyHamLog::QSOAddDialog::on_callsignEdit_editingFinished() {
 
     if (qso == nullptr) {
 
-        if (parent->preferences->useQRZ) {
+        if (parent->preferences->useQRZ && callsign != "") {
             if (QRZInterface::getOpenQRZInterface()->HasLoggedIn()) {
-
                 EasyHamLog::QSO* ham_member = QRZInterface::getOpenQRZInterface()->findQSOInQRZ(callsign.toStdString());
 
                 if (ham_member != nullptr) {
                     ui->locatorEdit->setText(ham_member->locator.c_str());
                     ui->nameEdit->setText(ham_member->name.c_str());
                     ui->countryEdit->setText(ham_member->country.c_str());
+                    delete ham_member;
                 }
-
-                delete ham_member;
-
             }
         }
 

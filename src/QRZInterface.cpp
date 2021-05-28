@@ -22,8 +22,7 @@ void EasyHamLog::QRZInterface::networkManagerFinishedCallback(QNetworkReply* net
 	QDomDocument* replyDocument = new QDomDocument;
 	replyDocument->setContent(reply);
 	QDomElement qrzDatabaseElement = replyDocument->firstChildElement();
-	qInfo() << qrzDatabaseElement.text();
-
+	
 	QDomNodeList qrzSessionElements = qrzDatabaseElement.elementsByTagName("Session");
 	if (qrzSessionElements.count() <= 0) {
 		return;
@@ -32,7 +31,7 @@ void EasyHamLog::QRZInterface::networkManagerFinishedCallback(QNetworkReply* net
 
 	QDomNodeList sessionErrors = session.elementsByTagName("Error");
 	if (sessionErrors.count() > 0) {
-		qInfo() << "QRZ Error: " << sessionErrors.at(0).toElement().text();
+		callsignReply = QDomElement();
 		pendingRequests.pop();
 		return;
 	}
@@ -46,7 +45,6 @@ void EasyHamLog::QRZInterface::networkManagerFinishedCallback(QNetworkReply* net
 			QRZInterface::getOpenQRZInterface()->sessionKey = sessionKeys.at(0).toElement().text().toStdString();
 			if (QRZInterface::getOpenQRZInterface()->sessionKey != "") {
 				QRZInterface::getOpenQRZInterface()->isLoggedIn = true;
-				qInfo() << QRZInterface::getOpenQRZInterface()->sessionKey.c_str() << QRZInterface::getOpenQRZInterface()->isLoggedIn;
 			}
 		}
 	}
