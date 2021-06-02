@@ -3,12 +3,16 @@
 #include <QMessageBox>
 #include <CallsignLookup.h>
 #include <QRZInterface.h>
+#include <qmath.h>
+#include <utility>
+#include <math.h>
 
-EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited) :
+EasyHamLog::QSOAddDialog::QSOAddDialog(EasyHamLog::MainUIApplication* parent, QString myLocator, EasyHamLog::QSO* edited) :
     QDialog(parent),
     parent(parent),
     contest(false),
-    ui(new Ui::QSOAddDialog)
+    ui(new Ui::QSOAddDialog),
+    myLocator(myLocator)
 {
     ui->setupUi(this);
 
@@ -177,4 +181,63 @@ void EasyHamLog::QSOAddDialog::toggleContest(bool change_value)
     ui->labelContestInfo->setHidden(!contest);
     ui->labelContestNumber->setHidden(!contest);
     ui->addContestInfoButton->setText(contest ? "-" : "+");   
+}
+
+std::pair<double, double> get_lat_lon(const char* loc) {
+    double lat = ((double)loc[1] - 65.0) * 10;
+    double lon = ((double)loc[0] - 65.0) * 20;
+
+    if (strlen(loc) >= 4) {
+        lat += (double)loc[3] - (double)'0';
+        lon += ((double)loc[2] - (double)'0') * 2.0;
+    }
+    if (strlen(loc) >= 6) {
+        lat += ((double)loc[5] - 65.0) / 24.0 + 1.0 / 48.0;
+        lon += ((double)loc[4] - 65.0) / 12.0 + 1.0 / 24.0;
+    }
+
+    lat -= 90.0;
+    lon -= 180.0;
+
+    return {lat, lon};
+}
+
+float get_locator_distance(QString loc1, QString loc2) {
+    
+    loc1 = loc1.toUpper();
+    loc2 = loc2.toUpper();
+
+    // Convert to lat long
+    auto lat_lon1 = get_lat_lon(loc1.toStdString().c_str());
+    auto lat_lon2 = get_lat_lon(loc2.toStdString().c_str());
+
+    // Convert to distance
+    double a = qPow(qSin(qDegreesToRadians(lat_lon2.first - lat_lon1.first) / 2.0), 2.0) +
+        qCos(qDegreesToRadians(lat_lon1.first)) * qCos(qDegreesToRadians(lat_lon2.first)) * qPow(qSin(qDegreesToRadians(lat_lon2.second - lat_lon1.second) / 2.0), 2.0);
+
+    double c = 2 * qAtan2(qSqrt(a), qSqrt(1 - a));
+
+    double d = qAbs(6371000.785 * c);
+
+    return d;
+}
+
+void EasyHamLog::QSOAddDialog::on_locatorEdit_textChanged(const QString &locator)
+{
+    if (locator.size() >= 2) {
+        float distance = get_locator_distance(myLocator, locator);
+
+        std::string s = std::to_string(distance / 1000.0);
+
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (s[i] == '0') {
+                s.pop_back();
+            }
+        }
+
+        s += " km";
+
+        ui->distanceLabel->setText(s.c_str());
+    }
+
 }

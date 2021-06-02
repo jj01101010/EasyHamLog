@@ -119,6 +119,9 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
         else if (current_prefix.nodeName() == "use_qrz") {
             preferences->useQRZ = current_prefix.text().toInt() == 1;
         }
+        else if (current_prefix.nodeName() == "locator") {
+            preferences->locator = current_prefix.text().toStdString();
+        }
     }
 
     delete database;
@@ -175,7 +178,7 @@ EasyHamLog::QSO* EasyHamLog::MainUIApplication::findQSOByCallsign(const std::str
 void EasyHamLog::MainUIApplication::on_addContactButton_clicked()
 {
     // Create a new Dialog
-    EasyHamLog::QSOAddDialog addDialog(this);
+    EasyHamLog::QSOAddDialog addDialog(this, QString(preferences->locator.c_str()));
     addDialog.setModal(true);
     int ret = addDialog.exec();     // 1 = Ok, 0 = Cancel
 
@@ -285,6 +288,10 @@ void EasyHamLog::MainUIApplication::savePreferences()
     child.appendChild(database.createTextNode(this->preferences->callsign.c_str()));
     root.appendChild(child);
 
+    child = database.createElement("locator");
+    child.appendChild(database.createTextNode(this->preferences->locator.c_str()));
+    root.appendChild(child);
+
     child = database.createElement("use_qrz");
     child.appendChild(database.createTextNode(std::to_string(this->preferences->useQRZ ? 1 : 0).c_str()));
     root.appendChild(child);
@@ -310,7 +317,7 @@ void EasyHamLog::MainUIApplication::on_tableWidget_itemDoubleClicked(QTableWidge
     // Find double clicked qso by getting the uuid of the row
     EasyHamLog::QSO* qso = qsoRows[ui->tableWidget->item(item->row(), ui->tableWidget->columnCount() - 1)->text().toStdString()];
     // Make a new dialog with the qso as a template
-    EasyHamLog::QSOAddDialog addDialog(this, qso);
+    EasyHamLog::QSOAddDialog addDialog(this, QString(preferences->locator.c_str()), qso);
     addDialog.setModal(true);
     int ret = addDialog.exec();
 

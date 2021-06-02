@@ -28,5 +28,6 @@ namespace EasyHamLog {
     struct Preferences {
         bool useQRZ;
         std::string callsign;
+        std::string locator;
     };
 }

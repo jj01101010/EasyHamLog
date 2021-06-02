@@ -19,7 +19,7 @@ namespace EasyHamLog {
         Q_OBJECT
 
     public:
-        explicit QSOAddDialog(EasyHamLog::MainUIApplication* parent, EasyHamLog::QSO* edited = nullptr);
+        explicit QSOAddDialog(EasyHamLog::MainUIApplication* parent, QString myLocator, EasyHamLog::QSO* edited = nullptr);
         ~QSOAddDialog();
 
         EasyHamLog::QSO* getQSO() const;
@@ -39,6 +39,8 @@ namespace EasyHamLog {
 
         void on_addContestInfoButton_clicked();
 
+        void on_locatorEdit_textChanged(const QString &arg1);
+
     private:
         void toggleContest(bool change_value=true);
 
@@ -47,6 +49,7 @@ namespace EasyHamLog {
         bool contest;
         EasyHamLog::MainUIApplication* parent;
         Ui::QSOAddDialog* ui;
+        QString myLocator;
 
     };
 

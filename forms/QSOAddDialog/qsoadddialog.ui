@@ -215,7 +215,7 @@
    <item row="12" column="1">
     <widget class="QLineEdit" name="countryEdit"/>
    </item>
-   <item row="16" column="1">
+   <item row="17" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <spacer name="horizontalSpacer">
@@ -407,7 +407,27 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="1">
+   <item row="14" column="1">
+    <widget class="QLineEdit" name="contestNumberEdit"/>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="labelContestInfo">
+     <property name="text">
+      <string>Contest RX Information</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <widget class="QLineEdit" name="contestInfoEdit"/>
+   </item>
+   <item row="15" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Distance:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="addContestInfoButton">
@@ -437,18 +457,12 @@
      </item>
     </layout>
    </item>
-   <item row="14" column="1">
-    <widget class="QLineEdit" name="contestNumberEdit"/>
-   </item>
-   <item row="13" column="0">
-    <widget class="QLabel" name="labelContestInfo">
+   <item row="15" column="1">
+    <widget class="QLabel" name="distanceLabel">
      <property name="text">
-      <string>Contest RX Information</string>
+      <string/>
      </property>
     </widget>
-   </item>
-   <item row="13" column="1">
-    <widget class="QLineEdit" name="contestInfoEdit"/>
    </item>
   </layout>
   <zorder>callsignEdit</zorder>
@@ -473,6 +487,9 @@
   <zorder>contestNumberEdit</zorder>
   <zorder>labelContestInfo</zorder>
   <zorder>contestInfoEdit</zorder>
+  <zorder>label</zorder>
+  <zorder></zorder>
+  <zorder>distanceLabel</zorder>
  </widget>
  <resources/>
  <connections/>
