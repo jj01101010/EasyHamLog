@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-set(PROJ_VERSION 1.1.0)
+set(PROJ_VERSION 1.2.0)
 
 if (WIN32)
     project(EasyHamLog LANGUAGES CXX VERSION ${PROJ_VERSION})

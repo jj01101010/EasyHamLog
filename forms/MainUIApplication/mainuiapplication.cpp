@@ -33,7 +33,8 @@
 EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
     QMainWindow(parent),
     app_version_encoded(0),
-    ui(new Ui::MainUIApplication)
+    ui(new Ui::MainUIApplication),
+    preferences(nullptr)
 {
     ui->setupUi(this);
     // Hide UUID column
@@ -61,7 +62,7 @@ EasyHamLog::MainUIApplication::MainUIApplication(QWidget *parent) :
 
     EasyHamLog::CallsignLookup::Initialize();
 
-    this->app_version = EHL_APP_VERSION;
+    this->app_version = EHL_APP_VERSION;    // Initialized by cmake
 
     // Convert Version to major, minor, patch
     QString curr_int = "";
